@@ -26,7 +26,7 @@
     </svg>
   </button>
 
-  <!-- Dropdown menu -->
+  {{-- Dropdown Menu --}}
   <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
     <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
       <li>
@@ -40,7 +40,12 @@
       </li>
     </ul>
     <div class="py-2">
-      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Separated link</a>
+      <form action="{{ route('logout') }}" method="post" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+        @csrf
+        <button type="submit">
+          LogOut
+        </button>
+      </form>
     </div>
   </div>
   @else
@@ -51,10 +56,4 @@
     </svg>
   </a>
   @endif
-
-
-
-
-
-
 </nav>
