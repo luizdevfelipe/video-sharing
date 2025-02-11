@@ -17,4 +17,11 @@ return [
     'password' => 'A senha informada está incorreta.',
     'throttle' => 'Muitas tentativas de LogIn. Tente novamente em :seconds segundos.',
     'emails.action_subcopy' => 'Se você está tendo problemas para clicar no botão \":actionText\", copie e cole o URL abaixo em seu navegador:',
+    'email-label' => 'Seu email',
+    'pass-label' => 'Sua senha',
+    'remember-label' => 'Lembrar-me',
+    'email-placeholder' => 'nome@dominio.com',
+    'passconfirm-label' => 'Confirme sua senha',
+    'name-label' => 'Seu nome',
+    'name-placeholder' => 'Nome Sobrenome',
 ];
