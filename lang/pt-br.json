@@ -11,6 +11,7 @@
     "Search": "Pesquisar",
     "Submit": "Enviar",
     "Register": "Registre-se",
+    "Unauthorized": "Não autorizado",
     "You are receiving this email because we received a password reset request for your account.": "Você está recebendo este e-mail porque recebemos uma solicitação de redefinição de senha para sua conta.",
     "Reset Password": "Redefinir Senha",
     "This password reset link will expire in :count minutes.": "Este link de redefinição de senha expirará em :count minutos.",
