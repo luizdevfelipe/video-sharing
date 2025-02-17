@@ -6,7 +6,7 @@ $(document).ready(function () {
         let password = $("#password").val();
 
         $.post({
-            url: '/api/login',
+            url: '/login',
             contentType: 'application/json',
             data: JSON.stringify({ email: email, password: password }),
             success: function (response) {
