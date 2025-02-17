@@ -8,7 +8,7 @@ $(document).ready(function() {
         const password_confirmation = $('#password-confirm').val();
 
         $.post({
-            url: '/api/register',
+            url: '/register',
             contentType: 'application/json',
             data: JSON.stringify({
                 name: name,
