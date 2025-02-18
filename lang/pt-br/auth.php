@@ -24,4 +24,5 @@ return [
     'passconfirm-label' => 'Confirme sua senha',
     'name-label' => 'Seu nome',
     'name-placeholder' => 'Nome Sobrenome',
+    'google-login' => 'Entrar com Google',
 ];
