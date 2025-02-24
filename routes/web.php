@@ -19,3 +19,9 @@ Route::controller(GoogleAuthController::class)->group(function () {
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', function () {
+        return view('profile.profile');
+    })->name('profile');
+});
