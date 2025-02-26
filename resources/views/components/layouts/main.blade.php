@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Video Sharing' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{ $head ?? null }}
 </head>
 
 <body class="bg-white dark:bg-black">
