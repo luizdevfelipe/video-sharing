@@ -1,9 +1,7 @@
 <x-layouts.main title="Video Sharing">
-    <x-sections.profile-section name="{{ __('History') }}" :sources="['video1' => 'resources/images/image.png', 'video2' => 'resources/images/image.png']">
-    </x-sections.profile-section>
+    <x-sections.profile-section name="{{ __('History') }}" :sources="['video1' => 'resources/images/image.png', 'video2' => 'resources/images/image.png']"/>
 
-    <x-sections.profile-section name="Playlists" :sources="['Pl1' => 'resources/images/image.png', 'Pl2' => 'resources/images/image.png']">
-    </x-sections.profile-section>
+    <x-sections.profile-section name="Playlists" :sources="['Pl1' => 'resources/images/image.png', 'Pl2' => 'resources/images/image.png']"/>
 
     <x-modals.upload-video modalTitle="Add a new video" btText="+" class="absolute z-1 left-1/2 bottom-10 -translate-x-1/2">
         <form method="POST" action="{{ route('profile.video') }}" enctype="multipart/form-data" class="p-4 md:p-5">
