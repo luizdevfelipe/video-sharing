@@ -12,5 +12,7 @@ class ProfileController extends Controller
     public function uploadVideo()
     {
         // Upload video
+
+        return redirect()->route('profile.index');
     }
 }
