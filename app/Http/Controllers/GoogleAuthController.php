@@ -33,7 +33,7 @@ class GoogleAuthController extends Controller
 
         if ($user) {
             Auth::login($user);
-            return redirect()->route('home');
+            return redirect()->route('home.index');
         } else {
             $createdUser = User::create([
                 'name'      => $googleUser->name,
@@ -44,8 +44,9 @@ class GoogleAuthController extends Controller
 
             if ($createdUser) {
                 Auth::login($createdUser);
-                return redirect()->route('home');
+                return redirect()->route('home.index');
             }
         }
+        return redirect()->route('auth.login');
     }
 }

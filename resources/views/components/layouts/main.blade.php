@@ -11,7 +11,7 @@
 
 <body class="bg-white dark:bg-black">
     <header>
-        <x-navigation.nav></x-navigation.nav>
+        <x-navigation.nav/>
     </header>
 
     <main>
