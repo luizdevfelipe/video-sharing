@@ -1,8 +1,8 @@
 <nav class="p-2 flex items-center text-dark bg-gray-200 dark:text-white dark:bg-gray-800">
   <div class="">
-    <a href="{{ route('home') }}">VideoSharing</a>
+    <a href="{{ route('home.index') }}">VideoSharing</a>
   </div>
-  <form action="" method="get" class="max-w-md mx-auto basis-2/3">
+  <form action="{{ route('home.search') }}" method="get" class="max-w-md mx-auto basis-2/3">
     <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">{{ __('Search')}}</label>
     <div class="relative">
       <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
