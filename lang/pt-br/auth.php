@@ -25,4 +25,7 @@ return [
     'name-label' => 'Seu nome',
     'name-placeholder' => 'Nome Sobrenome',
     'google-login' => 'Entrar com Google',
+    'verify-email' => "Por favor verifique seu endereço de email clicando no link que enviamos para seu email. Se você não recebeu o email, verifique sua pasta de spam.",
+    'resend-email' => 'Reenviar email de verificação',
+    'resend-success' => 'Email de verificação enviado com sucesso.',
 ];

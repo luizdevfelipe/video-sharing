@@ -24,4 +24,7 @@ return [
     'name-label' => 'Your name',
     'name-placeholder' => 'Name Lastname',
     'google-login' => 'Login with Google',
+    'verify-email' => "Please verify your email address by clicking the link we sent to your email. If you didn't receive the email, please check your spam folder.",
+    'resend-email' => 'Resend verification email',
+    'resend-success' => 'Verification email sent successfully.',
 ];
