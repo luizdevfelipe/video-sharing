@@ -3,7 +3,7 @@
     <div>
         <ul class="flex flex-wrap justify-start gap-1">
             @foreach ($sources as $name => $source)
-            <li class="p-1 rounded-sm bg-gray-100 dark:bg-gray-600"><img class="max-w-40" src="{{ Vite::asset($source) }}" alt="">
+            <li class="p-1 rounded-sm bg-gray-100 dark:bg-gray-600"><img class="max-w-40" src="" alt="">
                 <p>{{ $name }}</p>
             </li>
             @endforeach
