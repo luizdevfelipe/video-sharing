@@ -3,10 +3,18 @@ export  function getTranslations() {
 
     const translations = {
         en: {
-            enable2FACode: "To enable 2FA, you must scan this QR Code and submit the confirmation code below"
+            enable2FACode: "To enable 2FA, you must scan this QR Code and submit the confirmation code below",
+            submit: "Submit",
+            code: "Code",
+            invalid2FACode: "Invalid 2FA code",
+            success2FA: "2FA successfully enabled",
         },
         "pt-br": {
-            enable2FACode: "Para ativar a 2FA, você deve escanear este QR Code e enviar o código de confirmação abaixo"
+            enable2FACode: "Para ativar a 2FA, você deve escanear este QR Code e enviar o código de confirmação abaixo",
+            submit: "Enviar",
+            code: "Código",
+            invalid2FACode: "Código 2FA inválido",
+            success2FA: "2FA ativada com sucesso",
         }
     };
 
