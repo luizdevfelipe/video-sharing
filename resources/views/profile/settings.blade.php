@@ -4,7 +4,6 @@
     </x-slot:head>
 
     <form id="twoFactorForm" method="POST" action="{{ route('two-factor.enable') }}">
-        @csrf
         <x-navigation.button text="Ativar autenticação em dois fatores" />
     </form>
 </x-layouts.main>
