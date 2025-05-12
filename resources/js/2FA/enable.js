@@ -27,22 +27,19 @@ $(document).ready(function () {
 
     });
 
-    // TODO: finalizar o post do formulário de confirmação do código 2FA
-    $('#twoFactorConfirmCodeSubmit').click(function (e) {
+    $('#form').on('click', '#twoFactorConfirmCodeSubmit', function (e) {
         e.preventDefault();
-
-        $.post(
-            routes['two-factor.confirm'],
-
-        )
-            .done(function () {
-                window.location.href = routes['two-factor.index'];
-            }).fail(function (error) {
-                if (error.status === 422) {
-                    $('#twoFactorConfirmCode').html(`<div class="text-red-500">${translations.codeError}</div>`);
-                } else {
-                    window.location.href = routes['password.confirm'];
-                }
-            });
-    })
+        $.post({
+            url: routes['two-factor.confirm'],
+            contentType: 'application/json',
+            data: JSON.stringify({
+                code: $('#icode').val()
+            })
+        }).done(function () {
+            alert(translations.successEnable2FA);
+            window.location.href = routes['profile.settings'];
+        }).fail(function (error) {
+           alert(error.responseJSON.message);
+        });
+    });
 });
