@@ -1,4 +1,4 @@
-<x-layouts.auth>
+<x-layouts.auth title="{{ __('auth.register') }}">
     <form id="registerForm" action="{{ route('register') }}" method="POST">
         @csrf
 

@@ -25,6 +25,12 @@ return [
     'name-placeholder' => 'Name Lastname',
     'google-login' => 'Login with Google',
     'verify-email' => "Please verify your email address by clicking the link we sent to your email. If you didn't receive the email, please check your spam folder.",
+    'confirm-email' => 'Verify your email',
     'resend-email' => 'Resend verification email',
     'resend-success' => 'Verification email sent successfully.',
+    'confirm-password' => 'Confirm your Password',
+    'register' => 'Register',
+    'two-factor-verify' => 'Two-Factor Authentication',
+    'two-factor-code-label' => 'Authentication Code',
+    'recovery_codes_auth' => 'Login with recovery codes',
 ];
