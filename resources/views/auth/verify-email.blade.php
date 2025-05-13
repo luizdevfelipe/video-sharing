@@ -1,4 +1,4 @@
-<x-layouts.auth>
+<x-layouts.auth title="{{ __('auth.confirm-email') }}">
     <p class="text-justify">{{ __('auth.verify-email') }}</p>
     <form action="{{ route('verification.send') }}" method="post">
         @csrf
