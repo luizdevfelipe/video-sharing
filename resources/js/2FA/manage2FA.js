@@ -7,7 +7,7 @@ $(document).ready(function () {
         $.get(routes['two-factor.recovery-codes']
         ).done(function (response) {
             $('#getCodes').remove();
-            $('#manageCodes').append('<ul id="codeList" class="text-dark dark:text-white"></ul>');
+            $('#manageCodes').append('<ul id="codeList" class="text-dark text-center dark:text-white" style="font-family: monospace;"></ul>');
             response.forEach(code => {
                 $('#codeList').append('<li>' + code + '</li>');
             });
