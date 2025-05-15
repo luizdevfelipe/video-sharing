@@ -32,5 +32,6 @@ return [
     'register' => 'Register',
     'two-factor-verify' => 'Two-Factor Authentication',
     'two-factor-code-label' => 'Authentication Code',
+    'recovery_code_label' => 'Recovery Code',
     'recovery_codes_auth' => 'Login with recovery codes',
 ];
