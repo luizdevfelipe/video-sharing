@@ -33,5 +33,6 @@ return [
     'register' => 'Registrar-se',
     'two-factor-verify' => 'Autenticação de dois fatores',
     'two-factor-code-label' => 'Código de autenticação',
+    'recovery_code_label' => 'Código de recuperação',
     'recovery_codes_auth' => 'LogIn com códigos de recuperação',
 ];

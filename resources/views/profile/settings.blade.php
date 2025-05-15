@@ -13,7 +13,7 @@
                 <a href="{{ route('password.confirm') }}" class="text-blue-500 text-xl  hover:text-blue-700 underline">Confirme a senha para ver seus códigos de autenticação</a>
             </div>
         @else
-            <div class="flex justify-center gap-2 p-5" id="manageCodes">
+            <div class="grid justify-center items-start content-start gap-2 p-5 min-h-[300px]" id="manageCodes">
                 <x-navigation.button text="Visualizar códigos de autenticação" id="getCodes" />
                 <x-navigation.button text="Gerar novos códigos de autenticação" id="newCodes" />
             </div>

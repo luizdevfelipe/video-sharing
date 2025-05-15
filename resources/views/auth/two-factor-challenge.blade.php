@@ -3,7 +3,9 @@
     <script type="module">
       $(document).ready(function() {
         $('#recovery_code').on('click', function() {
-          alert('a')
+          $('#recovery_code').remove();
+          $('label[for="icode"]').text("{{__('auth.recovery_code_label')}}");
+          $('#icode').attr('placeholder', "XXXXXXXXXX-XXXXXXXXXX");
           $('#icode').attr('name', 'recovery_code');
         });
       });
