@@ -35,4 +35,9 @@ return [
     'two-factor-code-label' => 'Código de autenticação',
     'recovery_code_label' => 'Código de recuperação',
     'recovery_codes_auth' => 'LogIn com códigos de recuperação',
+    'remove2fa' => 'Remover autenticação em dois fatores',
+    'regenerate2fa' => 'Gerar novos códigos de recuperação',
+    'view2fa' => 'Ver códigos de recuperação',
+    'confirm-2fa-pass' => 'Confirme a senha para ver seus códigos de autenticação',
+    'enable-2fa' => 'Ativar autenticação em dois fatores',
 ];

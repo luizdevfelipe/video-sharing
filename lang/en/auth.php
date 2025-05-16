@@ -34,4 +34,9 @@ return [
     'two-factor-code-label' => 'Authentication Code',
     'recovery_code_label' => 'Recovery Code',
     'recovery_codes_auth' => 'Login with recovery codes',
+    'remove2fa' => 'Remove two-factor authentication',
+    'regenerate2fa' => 'Regenerate recovery codes',
+    'view2fa' => 'View recovery codes',
+    'confirm-2fa-pass' => 'Confirm password to view your authentication codes',
+    'enable-2fa' => 'Enable two-factor authentication',
 ];
