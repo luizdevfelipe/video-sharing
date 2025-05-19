@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.css', 
                 'resources/js/app.js', 
                 'resources/js/2FA/enable.js',
+                'resources/js/2FA/manage2FA.js',
                 'resources/js/routes.js'
             ],
             refresh: true,
