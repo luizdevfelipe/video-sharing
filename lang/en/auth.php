@@ -39,4 +39,5 @@ return [
     'view2fa' => 'View recovery codes',
     'confirm-2fa-pass' => 'Confirm password to view your authentication codes',
     'enable-2fa' => 'Enable two-factor authentication',
+    'forgot-password' => 'Forgot your password?',
 ];

@@ -40,4 +40,5 @@ return [
     'view2fa' => 'Ver códigos de recuperação',
     'confirm-2fa-pass' => 'Confirme a senha para ver seus códigos de autenticação',
     'enable-2fa' => 'Ativar autenticação em dois fatores',
+    'forgot-password' => 'Esqueci minha senha',
 ];
