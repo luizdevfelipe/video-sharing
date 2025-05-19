@@ -17,7 +17,6 @@
                 <x-navigation.button text="{{ __('auth.view2fa') }}" id="getCodes" />
                 <x-navigation.button text="{{ __('auth.regenerate2fa') }}" id="newCodes" />
                 <x-navigation.button color="red" text="{{ __('auth.remove2fa') }}" id="remove2FA" />
-                @method('DELETE')
             </div>
         @endif
     @else
