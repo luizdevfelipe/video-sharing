@@ -5,11 +5,5 @@
         <x-inputs.text name="email" type="email" label="auth.email-label" />
 
         <x-inputs.submit text="Submit" />
-
-        @if (session('status'))
-        <div class="mb-4 font-medium text-sm text-center text-green-600">
-            {{ session('status') }}
-        </div>
-        @endif
     </form>
 </x-layouts.auth>
