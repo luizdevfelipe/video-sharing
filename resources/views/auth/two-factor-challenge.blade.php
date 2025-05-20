@@ -19,5 +19,5 @@
 
     <x-inputs.submit text="Submit" />
   </form>
-  <p id="recovery_code" class="cursor-pointer">{{__('auth.recovery_codes_auth')}}</p>
+  <p id="recovery_code" class="cursor-pointer text-blue-600 hover:underline dark:text-blue-500">{{__('auth.recovery_codes_auth')}}</p>
 </x-layouts.auth>

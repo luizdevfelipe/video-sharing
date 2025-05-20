@@ -15,9 +15,9 @@
     </div>
 
     <div class="flex relative items-center justify-between mb-5">
-        <a href="{{ route('auth.google') }}" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg dark:bg-gray-700">{{ __('auth.google-login') }}</a>       
+      <a href="{{ route('auth.google') }}" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg dark:bg-gray-700">{{ __('auth.google-login') }}</a>
 
-        <a href="{{ route('password.request') }}" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg text-blue-600 hover:underline dark:text-blue-500 dark:bg-gray-700">{{ __('auth.forgot-password') }}</a>
+      <a href="{{ route('password.request') }}" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg text-blue-600 hover:underline dark:text-blue-500 dark:bg-gray-700">{{ __('auth.forgot-password') }}</a>
     </div>
 
     <x-inputs.submit text="Submit" />
