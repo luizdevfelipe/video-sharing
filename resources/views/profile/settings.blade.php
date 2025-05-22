@@ -20,10 +20,12 @@
             </div>
         @endif
     @else
-        <div id="form" class="grid justify-center items-start content-start gap-2 p-5 min-h-[300px]">
-            <form id="twoFactorForm" method="POST" action="{{ route('two-factor.enable') }}">
-                <x-navigation.button text="{{ __('auth.enable-2fa') }}" />
-            </form>
-        </div>
+        @if (!Auth::user()->google_id)
+            <div id="form" class="grid justify-center items-start content-start gap-2 p-5 min-h-[300px]">
+                <form id="twoFactorForm" method="POST" action="{{ route('two-factor.enable') }}">
+                    <x-navigation.button text="{{ __('auth.enable-2fa') }}" />
+                </form>
+            </div>
+        @endif
     @endif
 </x-layouts.main>
