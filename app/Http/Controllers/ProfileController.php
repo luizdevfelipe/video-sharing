@@ -2,16 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+
 class ProfileController extends Controller 
 {
+    /**
+     * Show the profile page
+     * @return \Illuminate\View\View
+     */
     public function index() 
     {
         return view('profile.profile');
     }
     
-    public function uploadVideo()
+    /**
+     * Save the uploaded video
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function uploadVideo(Request $request): RedirectResponse
     {
-        // Upload video
+        $data = $request->validate([
+            'title' => 'bail|required|string|max:255|min:10',
+            'description' => 'bail|required|string|max:3000|min:100',
+            'categories' => 'bail|required|array',
+            'video' => 'bail|required|file|mimes:mp4,mov,avi,wmv|max:20480',
+            'thumbnail' => 'bail|required|file|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
         return redirect()->route('profile.index');
     }

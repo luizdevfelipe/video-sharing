@@ -8,7 +8,7 @@
             @csrf
 
             {{-- Title --}}
-            <x-inputs.text label="Title" name="name" placeHolder="Title must contain a maximum of 255 characters" htmlAtributes="minlength=10 maxlength=255" />
+            <x-inputs.text label="Title" name="title" placeHolder="Title must contain a maximum of 255 characters" htmlAtributes="minlength=10 maxlength=255" />
 
             {{-- Description --}}
             <x-inputs.textarea label="Description" name="description" placeHolder="Description must contain a maximum of 3,000 characters" htmlAtributes="minlength=100 maxlength=3000" />
@@ -53,7 +53,7 @@
 
             {{-- Thumb --}}
             <p class="text-black dark:text-white">{{ __("Thumb File") }}</p>
-            <x-inputs.drop-file name="video" />
+            <x-inputs.drop-file name="thumbnail" />
 
             <x-inputs.submit text="Add Video" />
         </form>
