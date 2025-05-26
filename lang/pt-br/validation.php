@@ -195,6 +195,11 @@ return [
         'pfoto' => 'Foto',
         'password' => 'Senha',
         'preco' => 'Preço',
+        'categories' => 'Categorias',
+        'title' => 'Título',
+        'description' => 'Descrição',
+        'video' => 'Vídeo',
+        'thumbnail' => 'Miniatura',
     ],
 
 ];
