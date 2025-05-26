@@ -16,34 +16,34 @@
             {{-- Categories --}}
             <x-navigation.dropdown btText="Select a category" class="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
                 <li>
-                    <x-inputs.checkbox name="categories" value="action" text="Ação" description="Filmes e vídeos repletos de adrenalina e cenas eletrizantes." />
+                    <x-inputs.checkbox name="categories[]" value="action" text="Ação" description="Filmes e vídeos repletos de adrenalina e cenas eletrizantes." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="comedy" text="Comédia" description="Conteúdos engraçados para entreter e divertir." />
+                    <x-inputs.checkbox name="categories[]" value="comedy" text="Comédia" description="Conteúdos engraçados para entreter e divertir." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="drama" text="Drama" description="Histórias envolventes e emocionantes que exploram relações humanas." />
+                    <x-inputs.checkbox name="categories[]" value="drama" text="Drama" description="Histórias envolventes e emocionantes que exploram relações humanas." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="documentary" text="Documentário" description="Vídeos informativos e educativos baseados em fatos reais." />
+                    <x-inputs.checkbox name="categories[]" value="documentary" text="Documentário" description="Vídeos informativos e educativos baseados em fatos reais." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="horror" text="Terror" description="Filmes e vídeos assustadores para os fãs de suspense e medo." />
+                    <x-inputs.checkbox name="categories[]" value="horror" text="Terror" description="Filmes e vídeos assustadores para os fãs de suspense e medo." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="sci-fi" text="Ficção Científica" description="Histórias futurísticas, tecnologia avançada e mundos imaginários." />
+                    <x-inputs.checkbox name="categories[]" value="sci-fi" text="Ficção Científica" description="Histórias futurísticas, tecnologia avançada e mundos imaginários." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="animation" text="Animação" description="Conteúdos animados para todas as idades, desde infantis até adultos." />
+                    <x-inputs.checkbox name="categories[]" value="animation" text="Animação" description="Conteúdos animados para todas as idades, desde infantis até adultos." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="music" text="Música" description="Videoclipes, apresentações ao vivo e documentários musicais." />
+                    <x-inputs.checkbox name="categories[]" value="music" text="Música" description="Videoclipes, apresentações ao vivo e documentários musicais." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="sports" text="Esportes" description="Partidas, documentários e conteúdos sobre esportes diversos." />
+                    <x-inputs.checkbox name="categories[]" value="sports" text="Esportes" description="Partidas, documentários e conteúdos sobre esportes diversos." />
                 </li>
                 <li>
-                    <x-inputs.checkbox name="categories" value="education" text="Educação" description="Vídeos didáticos e tutoriais para aprendizado e desenvolvimento pessoal." />
+                    <x-inputs.checkbox name="categories[]" value="education" text="Educação" description="Vídeos didáticos e tutoriais para aprendizado e desenvolvimento pessoal." />
                 </li>
             </x-navigation.dropdown>
 
@@ -58,4 +58,13 @@
             <x-inputs.submit text="Add Video" />
         </form>
     </x-modals.upload-video>
+    <section id="errorsSection" class="text-center text-red-500 dark:text-red-400">
+        @if ($errors->any())
+        <ul id="errorsList">
+            @foreach ($errors->all() as $error)
+            <li><strong>{{ $error }}</strong></li>
+            @endforeach
+        </ul>
+        @endif
+    </section>
 </x-layouts.main>
