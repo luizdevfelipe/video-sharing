@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\VideoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller 
 {
+    /**
+     * Create a new controller instance.
+     * @param VideoService $videoService
+     */
+    public function __construct(private readonly VideoService $videoService) 
+    {
+
+    }
+
     /**
      * Show the profile page
      * @return \Illuminate\View\View
@@ -42,6 +52,7 @@ class ProfileController extends Controller
             $videoPath,
             $thumbnailPath
         );
+        
         return redirect()->route('profile.index');
     }
 
