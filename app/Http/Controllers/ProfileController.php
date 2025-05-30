@@ -42,8 +42,8 @@ class ProfileController extends Controller
             'thumbnail' => 'bail|required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $videoPath = Storage::disk('videos')->putFile('', $data["video"]);
-        $thumbnailPath = Storage::disk('thumbnails')->putFile('', $data["thumbnail"]);
+        $videoPath = Storage::disk('local')->putFile('videos', $data["video"]);
+        $thumbnailPath = Storage::disk('local')->putFile('thumbnails', $data["thumbnail"]);
    
         $this->videoService->createVideo(
             $data['title'],
