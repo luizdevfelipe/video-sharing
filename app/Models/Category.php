@@ -9,6 +9,6 @@ class Category extends Model
 {
     public function videos(): BelongsToMany
     {
-        return $this->belongsToMany(Video::class);
+        return $this->belongsToMany(Video::class)->withTimestamps();;
     }
 }
