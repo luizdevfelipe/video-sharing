@@ -6,6 +6,7 @@
         "dev": "vite"
     },
     "devDependencies": {
+        "@vitejs/plugin-vue": "^5.2.4",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.4",
         "concurrently": "^9.0.1",
@@ -17,6 +18,7 @@
     "dependencies": {
         "@tailwindcss/postcss": "^4.0.4",
         "flowbite": "^3.1.2",
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "vue": "^3.5.16"
     }
 }
