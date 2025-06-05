@@ -5,6 +5,12 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
+$customEnvPath = __DIR__.'/../../.env';
+if (file_exists($customEnvPath)) {
+    $dotenv = Dotenv\Dotenv::createImmutable($customEnvPath, '.env');
+    $dotenv->load();
+}
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
