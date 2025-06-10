@@ -1,9 +1,13 @@
 <script setup>
 import {onMounted} from 'vue';
 
+const props = defineProps({
+    pageTitle: [String, null],
+})
 onMounted(() => {
     document.getElementById('app').className = '';
     document.getElementById('app').classList.add('flex', 'items-center', 'justify-center', 'bg-white', 'dark:bg-gray-700', 'min-h-screen')
+    document.title = props.pageTitle || 'Video Sharing';
 })
 </script>
 
