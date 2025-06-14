@@ -3,6 +3,10 @@ import MainLayout from '@/views/layouts/MainLayout.vue';
 import ProfileSection from '@/components/sections/ProfileSection.vue';
 import UploadVideoModal from '@/components/modals/UploadVideoModal.vue';
 import Checkbox from '@/components/inputs/Checkbox.vue';
+import TextInput from '@/components/inputs/TextInput.vue';
+import Dropfile from '@/components/inputs/Dropfile.vue';
+import Submit from '@/components/inputs/Submit.vue';
+import Dropdown from '@/components/navigation/Dropdown.vue';
 import { getTranslations } from '@/assets/js/translations';
 
 import { onMounted } from 'vue'
@@ -20,19 +24,18 @@ const translations = getTranslations();
         <ProfileSection :name="translations.history" />
         <ProfileSection name="Playlists" />
 
-        <UploadVideoModal modalTitle="addANewVideo" btText="+">
-            <!-- class="absolute z-1 left-1/2 bottom-10 -translate-x-1/2" -->
+        <UploadVideoModal :modalTitle="translations.addANewVideo" btText="+" classes="absolute z-1 left-1/2 bottom-10 -translate-x-1/2">
 
             <form method="POST" action="/profile/video" enctype="multipart/form-data" class="p-4 md:p-5">
 
             <!-- Title -->
-            <TextInput :label="translations.title" name="title" :placeHolder="translations.modalVideoTitlePH" htmlAtributes="minlength=10 maxlength=255" />
+            <TextInput :label="translations.title" name="title" :placeHolder="translations.modalVideoTitlePH" :htmlAttributes="{minlength: 10, maxlength: 255, autofocus: true}" />
 
             <!-- Description -->
-            <TextInput :label="transactions.description" name="description" :placeHolder="transactions.modalVideoDescriptionPH" htmlAtributes="minlength=100 maxlength=3000" />
+            <TextInput :label="translations.description" name="description" :placeHolder="translations.modalVideoDescriptionPH" :htmlAttributes="{minlength: 100, maxlength: 3000}" />
 
              <!-- Categories -->
-                <x-navigation.dropdown btText="Select a category" class="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
+                <Dropdown btText="Select a category" classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
                     <li>
                         <Checkbox name="categories[]" value="action" text="Ação" description="Filmes e vídeos repletos de adrenalina e cenas eletrizantes." />
                     </li>
@@ -63,17 +66,17 @@ const translations = getTranslations();
                     <li>
                         <Checkbox name="categories[]" value="education" text="Educação" description="Vídeos didáticos e tutoriais para aprendizado e desenvolvimento pessoal." />
                     </li>
-                </x-navigation.dropdown>
+                </Dropdown>
 
                 <!-- Video -->
-                <p class="text-black dark:text-white">{{ __("Video File") }}</p>
-                <x-inputs.drop-file name="video" />
+                <p class="text-black dark:text-white">{{ translations.videoFile }}</p>
+                <Dropfile name="video" />
 
                 <!-- Thumb -->
-                <p class="text-black dark:text-white">{{ __("Thumb File") }}</p>
-                <x-inputs.drop-file name="thumbnail" />
+                <p class="text-black dark:text-white">{{ translations.thumbFile }}</p>
+                <Dropfile name="thumbnail" />
 
-                <x-inputs.submit text="Add Video" />
+                <Submit text="Add Video" />
             </form>
         </UploadVideoModal>
     </MainLayout>
