@@ -28,7 +28,6 @@ Route::prefix('auth')->name('auth.')->group(function () {
  */
 Route::middleware(['auth', 'verified'])->controller(ProfileController::class)
     ->prefix('profile')->name('profile.')->group(function () {
-        Route::get('/', 'index')->name('index');
         Route::get('/settings', 'showSettings')->name('settings');
         Route::get('/videos', 'showEditVideos')->name('edit-videos');
         Route::post('/video', 'uploadVideo')->name('video');
