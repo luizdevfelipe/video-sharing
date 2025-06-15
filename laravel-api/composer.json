@@ -13,6 +13,7 @@
         "laravel/fortify": "^1.25",
         "laravel/framework": "^12.0",
         "laravel/passport": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.9",
         "php-ffmpeg/php-ffmpeg": "^1.3"
