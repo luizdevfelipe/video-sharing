@@ -17,16 +17,7 @@ class ProfileController extends Controller
     {
 
     }
-
-    /**
-     * Show the profile page
-     * @return \Illuminate\View\View
-     */
-    public function index() 
-    {
-        return view('profile.profile');
-    }
-    
+      
     /**
      * Save the uploaded video
      * @param \Illuminate\Http\Request $request
