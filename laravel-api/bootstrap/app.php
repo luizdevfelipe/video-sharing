@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'password.confirm' => CustomRequirePassword::class
         ]);
+        $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
