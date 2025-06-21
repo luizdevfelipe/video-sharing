@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import api from '../../services/api.js';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +42,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.public) return next();
 
   try {
-    await axios.get('/api/user');
+    await api.get('/api/user');
     next();
   } catch (error) {
     next('/login');
