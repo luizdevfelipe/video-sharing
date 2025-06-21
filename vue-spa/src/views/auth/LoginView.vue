@@ -16,14 +16,15 @@ const translations = getTranslations();
 
 async function login() {
     await api.get('/sanctum/csrf-cookie').then(response => {
-        api.post('/login', {
+        api.post('/api/login', {
             email: loginCredentials.email,
             password: loginCredentials.password,
             remember: loginCredentials.remember
         }).then(response => {
-            console.log('Login successful:', response.data);
+            alert(response.data.message);
+            window.location.href = '/profile';
         }).catch(error => {
-            console.error('Login failed:', error.response.data);
+            alert(error.response.data.message);
         });
     });
 };
