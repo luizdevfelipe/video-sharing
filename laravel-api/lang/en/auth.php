@@ -14,6 +14,7 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
+    'registration-failed' => 'Registration failed, possibly a user is already registered with this email.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'email-label' => 'Your email',
@@ -28,6 +29,7 @@ return [
     'confirm-email' => 'Verify your email',
     'resend-email' => 'Resend verification email',
     'resend-success' => 'Verification email sent successfully.',
+    'registered' => 'Registered successfully.',
     'confirm-password' => 'Confirm your Password',
     'register' => 'Register',
     'two-factor-verify' => 'Two-Factor Authentication',
@@ -40,4 +42,5 @@ return [
     'confirm-2fa-pass' => 'Confirm password to view your authentication codes',
     'enable-2fa' => 'Enable two-factor authentication',
     'forgot-password' => 'Forgot your password?',
+    'autenticated' => 'Autenticated',
 ];
