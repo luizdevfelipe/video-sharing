@@ -17,13 +17,6 @@ onMounted(() => {
 
         <section id="errorsSection" class="text-center text-red-500 dark:text-red-400">
             <slot name="errors" />
-            <!-- @if ($errors->any())
-            <ul id="errorsList">
-                @foreach ($errors->all() as $error)
-                <li><strong>{{ $error }}</strong></li>
-                @endforeach
-            </ul>
-            @endif -->
         </section>
 
         <section id="sessionStatus" class="mb-4 font-medium text-sm text-center text-green-600">
