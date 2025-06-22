@@ -10,7 +10,8 @@ const userData = reactive({
     email: '',
     name: '',
     password: '',
-    password_confirmation: ''
+    password_confirmation: '',
+    errors: null
 })
 
 async function createAccount() {
@@ -24,7 +25,7 @@ async function createAccount() {
             alert(response.data.message);
             window.location.href = '/profile';
         }).catch(error => {
-            alert(error.response.data.message);
+            userData.errors = error.response.data.message;
         });
     });
 }
@@ -45,5 +46,9 @@ const translations = getTranslations();
 
             <Submit :text="translations.authSubmit" />
         </form>
+
+        <template #errors>
+            <p v-if="userData.errors !== null"> {{ userData.errors }}</p>
+        </template>
     </AuthLayout>
 </template>

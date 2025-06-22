@@ -9,7 +9,8 @@ import { reactive } from 'vue';
 const loginCredentials = reactive({
     email: '',
     password: '',
-    remember: false
+    remember: false,
+    errors: null
 });
 
 const translations = getTranslations();
@@ -24,7 +25,7 @@ async function login() {
             alert(response.data.message);
             window.location.href = '/profile';
         }).catch(error => {
-            alert(error.response.data.message);
+            loginCredentials.errors = error.response.data.message;
         });
     });
 };
@@ -56,5 +57,9 @@ async function login() {
 
             <Submit :text="translations.authSubmit" />
         </form>
+
+        <template #errors>
+            <p v-if="loginCredentials.errors !== null">{{ loginCredentials.errors }}</p>
+        </template>
     </AuthLayout>
 </template>
