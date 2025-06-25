@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import api from '../../services/api.js';
+import { user } from '@/composables/useUser.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,18 @@ const router = createRouter({
       component: () => import('../views/profile/ProfileIndex.vue'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/profile/settings',
+      name: 'profile-settings',
+      component: () => import('../views/profile/Settings.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/confirm-password',
+      name: 'confirm-password',
+      component: () => import('../views/auth/ConfirmPass.vue'),
+      meta: { requiresAuth: true }
+    }
   ],
 })
 
@@ -42,7 +55,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.public) return next();
 
   try {
-    await api.get('/api/user');
+    user.value = await api.get('/api/user').then(res => res.data);
     next();
   } catch (error) {
     next('/login');

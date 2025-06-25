@@ -11,6 +11,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::controller(AuthController::class)->group(function (){
-    Route::post('/login', 'login')->name('login');
     Route::post('/register', 'register')->name('register');
 });
