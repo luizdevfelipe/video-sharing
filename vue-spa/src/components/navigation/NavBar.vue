@@ -1,5 +1,22 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+import api from '../../../services/api.js';
+import { onMounted } from 'vue';
+import { initFlowbite } from 'flowbite';
+import { getTranslations } from '@/assets/js/translations';
+import { user } from '@/composables/useUser.js';
+
+onMounted(() => {
+    initFlowbite();
+})
+
+function logout() {
+    api.post('/api/logout');
+    user.value = null;
+    window.location.reload();
+}
+
+const translations = getTranslations();
 </script>
 
 <template>
@@ -26,8 +43,7 @@ import { RouterLink } from 'vue-router'
             </div>
         </form>
 
-        <!-- @if (Auth::check()) -->
-        <button v-if="jwt" id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-dark hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button v-if="user != null" id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-dark hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
@@ -41,28 +57,25 @@ import { RouterLink } from 'vue-router'
             </svg>
         </RouterLink>
 
-        <!-- Dropdown Menu -->
+        <!-- Dropdown -->
         <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
-            <!-- @if ( request()->routeIs('profile.index') ) -->
             <li>
-                <!-- <a href="{{ route('profile.settings') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('Manage Account') }}</a> -->
+                <a href="/profile/settings" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.manageAccount }}</a>
             </li>
             <li>
-                <!-- <a href="{{ route('profile.edit-videos') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('Manage your videos') }}</a> -->
+                <a href="/profile/videos" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.manageVideos }}</a>
             </li>
-            <!-- @else -->
             <li>
-                <!-- <a href="{{ route('profile.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ __('Your Profile') }}</a> -->
+                <a href="/profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.yourProfile }}</a>
             </li>
-            <!-- @endif -->
             </ul>
             <div>
-                <!-- <form action="{{ route('logout') }}" method="post" class="block text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                <form v-on:submit.prevent="logout()" method="post" class="block text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                     <button type="submit" class="d-block w-full p-2">
                     LogOut
                     </button>
-                </form> -->
+                </form>
             </div>
         </div>
     </nav>

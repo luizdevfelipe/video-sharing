@@ -52,13 +52,16 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.meta.public) return next();
+  if (user.value != null) return next();
 
   try {
     user.value = await api.get('/api/user').then(res => res.data);
     next();
   } catch (error) {
-    next('/login');
+    if (to.meta.requiresAuth) {
+      next('/login');
+    }
+    next();
   }
 });
 
