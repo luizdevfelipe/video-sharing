@@ -5,6 +5,7 @@ import { getTranslations } from '@/assets/js/translations';
 import { user } from '@/composables/useUser.js'
 import api from '../../../services/api.js';
 import { ref, onMounted } from 'vue';
+import { getCodes, newCodes, remove2FA } from '@/assets/js/2FA/manage2FA.js';
 
 const isPassConfirmed = ref(false);
 
@@ -12,13 +13,12 @@ onMounted(async () => {
     await api.get('api/confirmed-password-status').then(response => {
         isPassConfirmed.value = response.data.confirmed;
     });
-
-    if (user.value.two_factor_confirmed_at) {
-        await import('@/assets/js/2FA/manage2FA.js');
-    } else {
-        await import('@/assets/js/2FA/enable.js');
-    }
 })
+
+function enable2FA() {
+    // Terminar
+    api.post('api/two-factor-authentication')
+}
 
 const translations = getTranslations();
 </script>
@@ -31,14 +31,15 @@ const translations = getTranslations();
                     translations.confirm2FAPass }} </a>
             </div>
             <div v-else class="grid justify-center items-start content-start gap-2 p-5 min-h-[300px]" id="manageCodes">
-                <Button color="blue" :text="translations.view2FA" id="getCodes" />
-                <Button color="blue" :text="translations.regenerate2fa" id="newCodes" />
-                <Button color="red" :text="translations.remove2fa" id="remove2FA" />
+                <Button v-on:click="getCodes()" color="blue" :text="translations.view2FA" id="getCodes" />
+                <Button v-on:click="newCodes()" color="blue" :text="translations.regenerate2fa" id="newCodes" />
+                <Button v-on:click="remove2FA()" color="red" :text="translations.remove2fa" id="remove2FA" />
             </div>
         </div>
         <div v-else-if="!user.google_id" id="form"
             class="grid justify-center items-start content-start gap-2 p-5 min-h-[300px]">
-            <form id="twoFactorForm" method="POST" action="/two-factor.enable">
+            
+            <form id="twoFactorForm" method="post" @submit.prevent="enable2FA">
                 <Button color="blue" :text="translations.enable2FA" />
             </form>
         </div>
