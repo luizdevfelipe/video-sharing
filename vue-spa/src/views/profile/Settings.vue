@@ -6,6 +6,7 @@ import { user } from '@/composables/useUser.js'
 import api from '../../../services/api.js';
 import { ref, onMounted } from 'vue';
 import { getCodes, newCodes, remove2FA } from '@/assets/js/2FA/manage2FA.js';
+import { enable2FA, submit2FATestCode } from '@/assets/js/2FA/enable.js';
 
 const isPassConfirmed = ref(false);
 
@@ -14,11 +15,6 @@ onMounted(async () => {
         isPassConfirmed.value = response.data.confirmed;
     });
 })
-
-function enable2FA() {
-    // Terminar
-    api.post('api/two-factor-authentication')
-}
 
 const translations = getTranslations();
 </script>
@@ -31,9 +27,9 @@ const translations = getTranslations();
                     translations.confirm2FAPass }} </a>
             </div>
             <div v-else class="grid justify-center items-start content-start gap-2 p-5 min-h-[300px]" id="manageCodes">
-                <Button v-on:click="getCodes()" color="blue" :text="translations.view2FA" id="getCodes" />
-                <Button v-on:click="newCodes()" color="blue" :text="translations.regenerate2fa" id="newCodes" />
-                <Button v-on:click="remove2FA()" color="red" :text="translations.remove2fa" id="remove2FA" />
+                <Button @click="getCodes()" color="blue" :text="translations.view2FA" id="getCodes" />
+                <Button @click="newCodes()" color="blue" :text="translations.regenerate2fa" id="newCodes" />
+                <Button @click="remove2FA()" color="red" :text="translations.remove2fa" id="remove2FA" />
             </div>
         </div>
         <div v-else-if="!user.google_id" id="form"
