@@ -22,8 +22,11 @@ async function login() {
             password: loginCredentials.password,
             remember: loginCredentials.remember
         }).then(response => {
-            alert(response.data.message);
-            window.location.href = '/profile';
+            if (response.data.two_factor){
+                window.location.href = '/two-factor-challenge';
+            } else {
+                window.location.href = '/profile';
+            }
         }).catch(error => {
             loginCredentials.errors = error.response.data.message;
         });
