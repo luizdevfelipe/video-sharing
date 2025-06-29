@@ -47,6 +47,12 @@ const router = createRouter({
       name: 'confirm-password',
       component: () => import('../views/auth/ConfirmPass.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/two-factor-challenge',
+      name: 'two-factor-challenge',
+      component: () => import('../views/auth/TwoFactorChallenge.vue'),
+      meta: { public: true }
     }
   ],
 })
