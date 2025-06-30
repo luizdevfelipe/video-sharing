@@ -20,9 +20,10 @@ onMounted(() => {
 })
 
 function submitForm() {
-    api.post('api/two-factor-challenge', {
-        code: code.value,
-    }).then(response => {
+    const data = document.getElementById('icode').getAttribute('name') === 'recovery_code' ? {recovery_code: code.value} : {code: code.value};
+
+    api.post('api/two-factor-challenge', data
+    ).then(response => {
         if (response.status === 204) {
             window.location.href = '/profile';
         }
@@ -38,8 +39,7 @@ const translations = getTranslations();
         <form id="loginForm" method="POST" @submit.prevent="submitForm">
             <legend class="text-center text-xl font-bold">{{ translations.authTwoFactorVerify }}</legend>
 
-            <TextInput name="code" type="text" :label="translations.authTwoFactorCodeLabel" placeHolder="123456"
-                v-model="code" />
+            <TextInput name="code" type="text" :label="translations.authTwoFactorCodeLabel" placeHolder="123456" v-model="code" :htmlAttributes="{autofocus: true}" />
 
             <Submit :text="translations.authSubmit" />
         </form>

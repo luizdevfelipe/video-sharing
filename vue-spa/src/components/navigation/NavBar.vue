@@ -10,10 +10,12 @@ onMounted(() => {
     initFlowbite();
 })
 
-function logout() {
-    api.post('/api/logout');
-    user.value = null;
-    window.location.reload();
+async function logout() {
+    const result = await api.post('/api/logout')
+    if (result.status === 204) {
+        user.value = null;
+        window.location.href = '/';
+    }
 }
 
 const translations = getTranslations();
