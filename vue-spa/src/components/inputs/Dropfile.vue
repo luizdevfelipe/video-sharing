@@ -1,8 +1,15 @@
 <script setup>
 import { getTranslations } from '@/assets/js/translations';
 defineProps({
+    modelValue: File,
     name: String
 });
+
+const emit = defineEmits(['update:modelValue']);
+function onInput(event) {
+    const file = event.target.files[0];
+    emit('update:modelValue', file);
+}
 const translations = getTranslations()
 </script>
 
@@ -17,7 +24,7 @@ const translations = getTranslations()
                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">{{ translations.clickToUpload }} </span> {{ translations.orDragAndDrop }}</p>
                     <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                 </div>
-                <input :id="'i'+name" :name="name" type="file" class="hidden" />
+                <input :id="'i'+name" :name="name" type="file" class="hidden" @input="onInput" />
             </label>
         </div>
     </div>
