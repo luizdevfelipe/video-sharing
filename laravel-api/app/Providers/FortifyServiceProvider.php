@@ -123,8 +123,10 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
 
-            if ($user->google_id) {
-                return null;
+            if ($user) {
+                if ($user->google_id) {
+                    return null;
+                }
             } else if (
                 $user &&
                 Hash::check($request->password, $user->password)
