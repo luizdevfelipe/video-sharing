@@ -16,7 +16,7 @@ class VideoService
      * @param array $categories
      * @param string $videoPath
      * @param string $thumbnailPath
-     * @return void
+     * @return int $videoId
      */
     public function createVideo(
         string $title,
@@ -24,7 +24,7 @@ class VideoService
         array $categories,
         string $videoPath,
         string $thumbnailPath
-    ): void {
+    ): int {
         $video = Video::create([
             'title' => $title,
             'description' => $description,
@@ -32,14 +32,19 @@ class VideoService
             'thumbnail_path' => $thumbnailPath,
         ]);
 
-        $categoryIds = array_map(function ($category) {
-            $id = Category::where('name', $category)->first()->id;
-            if ($id) {
-                return $id;
+        $categoryIds = [];
+        foreach ($categories as $name) {
+            $category = Category::select('id')->where('name', $name)->first();
+            if ($category) {
+                $categoryIds[] = $category->id;
             }
-        }, $categories);
+        }
 
-        $video->categories()->attach($categoryIds);
+        if (!empty($categoryIds)) {
+            $video->categories()->attach($categoryIds);
+        }
+
+        return $video->id;
     }
 
     public function storageVideo($file)
@@ -50,6 +55,18 @@ class VideoService
     public function storageThumbnail($file)
     {
         return Storage::disk('local')->putFile('thumbnails', $file);
+    }
+
+    public function deleteVideo(int $videoId): bool
+    {
+        $video = Video::find($videoId);
+        if (!$video) {
+            return false;
+        }
+        $video->delete();
+        $video->categories()->detach();
+
+        return (bool) $video;
     }
 
     /**
