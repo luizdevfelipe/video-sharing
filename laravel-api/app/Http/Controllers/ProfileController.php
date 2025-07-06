@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\VideoService;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller 
 {
@@ -23,27 +22,26 @@ class ProfileController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function uploadVideo(Request $request): RedirectResponse
+    public function uploadVideo(Request $request): JsonResponse
     {
         $data = $request->validate([
             'title' => 'bail|required|string|max:255|min:10',
             'description' => 'bail|required|string|max:3000|min:100',
-            'categories' => 'bail|required|array',
+            'categories' => 'bail|required|array|exists:categories,name',
             'video' => 'bail|required|file|mimes:mp4,mov,avi,wmv|max:20480',
             'thumbnail' => 'bail|required|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $videoPath = Storage::disk('local')->putFile('videos', $data["video"]);
-        $thumbnailPath = Storage::disk('local')->putFile('thumbnails', $data["thumbnail"]);
+        $filePaths = $this->videoService->storageNewUploadedVideoFiles($data['video'], $data['thumbnail']);
    
         $this->videoService->createVideo(
             $data['title'],
             $data['description'],
             $data['categories'],
-            $videoPath,
-            $thumbnailPath
+            $filePaths['video'],
+            $filePaths['thumbnail']
         );
-        
-        return redirect()->route('profile.index');
+
+        return response()->json(['message' => 'Video uploaded successfully!'], 200);
     }
 }
