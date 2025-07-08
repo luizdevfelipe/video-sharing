@@ -126,13 +126,12 @@ class FortifyServiceProvider extends ServiceProvider
             if ($user) {
                 if ($user->google_id) {
                     return null;
+                } else if (Hash::check($request->password, $user->password)) {
+                    return $user;
                 }
-            } else if (
-                $user &&
-                Hash::check($request->password, $user->password)
-            ) {
-                return $user;
             }
+
+            return null;
         });
 
         RateLimiter::for('login', function (Request $request) {
