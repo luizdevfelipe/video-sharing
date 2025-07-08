@@ -3,18 +3,24 @@
 namespace Tests\Feature\Controllers;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic feature test example.
      */
     public function test_upload_video_route(): void
     {
         // Arrange
+        Storage::fake('local');
+
         $user = User::factory()->create();
         
         // Act
