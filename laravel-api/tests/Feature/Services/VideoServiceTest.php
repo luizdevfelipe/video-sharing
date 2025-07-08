@@ -3,6 +3,7 @@
 namespace Tests\Services\Feature;
 
 use App\Services\VideoService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,7 @@ use Tests\TestCase;
 
 class VideoServiceTest extends TestCase
 {
+    use RefreshDatabase;
     private VideoService $videoService;
 
     /**
@@ -92,8 +94,5 @@ class VideoServiceTest extends TestCase
                 'category_id' => DB::table('categories')->where('name', $category)->value('id'),
             ]);
         }
-        // Clean up 
-        DB::table('category_video')->where('video_id', $videoId)->delete();
-        DB::table('videos')->where('id', $videoId)->delete();
     }
 }

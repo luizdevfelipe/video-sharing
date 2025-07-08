@@ -59,6 +59,7 @@ services:
       test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}", "-d", "${DB_DATABASE}"]
       retries: 3
       timeout: 5s
+    command: bash -c "docker-entrypoint.sh postgres & sleep 5 && psql -U $DB_USERNAME -d $DB_DATABASE -c 'CREATE DATABASE testing;' && wait"
 
   redis:
     image: 'redis:alpine'
