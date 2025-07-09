@@ -8,16 +8,14 @@ import TextInput from '@/components/inputs/TextInput.vue';
 import Dropfile from '@/components/inputs/Dropfile.vue';
 import Submit from '@/components/inputs/Submit.vue';
 import Dropdown from '@/components/navigation/Dropdown.vue';
-import { getTranslations } from '@/assets/js/translations';
+import TextArea from '@/components/inputs/TextArea.vue';
 import api from '../../../services/api.js';
-
+import { getTranslations } from '@/assets/js/translations';
 import { ref, reactive, onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
-import TextArea from '@/components/inputs/TextArea.vue';
 
-onMounted(() => {
-    initFlowbite();
-})
+const availableCategories = ref([]);
+const errors = ref(null);
 
 const videoFile = reactive({
     title: '',
@@ -27,7 +25,15 @@ const videoFile = reactive({
     thumb: null
 });
 
-const errors = ref(null);
+onMounted(async () => {
+    initFlowbite();
+
+    await api.get('/api/categories').then(response => {
+        availableCategories.value = response.data;
+    }).catch(error => {
+        errors.value = error.response.data.errors;
+    })
+})
 
 async function enviarVideo() {
     if (!videoFile.file || !videoFile.thumb) {
@@ -57,7 +63,6 @@ async function enviarVideo() {
     ).catch (error => {
         errors.value = error.response.data.errors;
     })
-
 }
 
 const translations = getTranslations();
@@ -83,57 +88,15 @@ const translations = getTranslations();
                     :htmlAttributes="{ minlength: 100, maxlength: 3000 }" v-model="videoFile.description" />
 
                 <!-- Categories -->
-                <Dropdown btText="Select a category"
-                    classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
-                    <li>
-                        <Checkbox name="categories" value="action" text="Ação"
-                            description="Filmes e vídeos repletos de adrenalina e cenas eletrizantes."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="comedy" text="Comédia"
-                            description="Conteúdos engraçados para entreter e divertir."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="drama" text="Drama"
-                            description="Histórias envolventes e emocionantes que exploram relações humanas."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="documentary" text="Documentário"
-                            description="Vídeos informativos e educativos baseados em fatos reais."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="horror" text="Terror"
-                            description="Filmes e vídeos assustadores para os fãs de suspense e medo."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="sci-fi" text="Ficção Científica"
-                            description="Histórias futurísticas, tecnologia avançada e mundos imaginários."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="animation" text="Animação"
-                            description="Conteúdos animados para todas as idades, desde infantis até adultos."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="music" text="Música"
-                            description="Videoclipes, apresentações ao vivo e documentários musicais."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="sports" text="Esportes"
-                            description="Partidas, documentários e conteúdos sobre esportes diversos."
-                            v-model="videoFile.categories" />
-                    </li>
-                    <li>
-                        <Checkbox name="categories" value="education" text="Educação"
-                            description="Vídeos didáticos e tutoriais para aprendizado e desenvolvimento pessoal."
-                            v-model="videoFile.categories" />
+                <Dropdown  btText="Select a category" classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
+                    <li v-for="availableCategory in availableCategories">
+                        <Checkbox
+                            name="categories"
+                            :value="availableCategory.name"
+                            :text="availableCategory.name.charAt(0).toUpperCase() + availableCategory.name.slice(1)"
+                            :description="availableCategory.description"
+                            v-model="videoFile.categories"
+                        />
                     </li>
                 </Dropdown>
 
