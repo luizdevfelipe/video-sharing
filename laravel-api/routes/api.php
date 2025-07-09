@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             // Route::get('/videos', 'showEditVideos')->name('edit-videos'); TODO
         });
+
+    Route::get('/categories', [CategoryController::class, 'getCategories'])->name('categories');
 });
 
 Route::controller(AuthController::class)->group(function () {
