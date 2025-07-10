@@ -32,13 +32,10 @@ class VideoService
             'thumbnail_path' => $thumbnailPath,
         ]);
 
-        $categoryIds = [];
-        foreach ($categories as $name) {
-            $category = Category::select('id')->where('name', $name)->first();
-            if ($category) {
-                $categoryIds[] = $category->id;
-            }
-        }
+        $categoryIds = Category::whereIn('name', $categories)
+            ->where('lang', config('app.locale'))
+            ->pluck('id')
+            ->toArray();
 
         if (!empty($categoryIds)) {
             $video->categories()->attach($categoryIds);
