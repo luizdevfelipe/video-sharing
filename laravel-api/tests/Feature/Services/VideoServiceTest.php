@@ -91,7 +91,7 @@ class VideoServiceTest extends TestCase
         foreach ($data['categories'] as $category) {
             $this->assertDatabaseHas('category_video', [
                 'video_id' => $videoId,
-                'category_id' => DB::table('categories')->where('name', $category)->value('id'),
+                'category_id' => DB::table('categories')->where('name', $category)->where('lang', config('app.locale'))->value('id'),
             ]);
         }
     }
