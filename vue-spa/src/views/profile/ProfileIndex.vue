@@ -10,12 +10,15 @@ import Submit from '@/components/inputs/Submit.vue';
 import Dropdown from '@/components/navigation/Dropdown.vue';
 import TextArea from '@/components/inputs/TextArea.vue';
 import api from '../../../services/api.js';
+import SuccessNotification from '@/components/notification/SuccessNotification.vue';
 import { getTranslations } from '@/assets/js/translations';
 import { ref, reactive, onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
+import { closeModal } from '@/assets/js/modal.js';
 
 const availableCategories = ref([]);
 const errors = ref(null);
+const uploadStatus = ref(false);
 
 const videoFile = reactive({
     title: '',
@@ -28,11 +31,13 @@ const videoFile = reactive({
 onMounted(async () => {
     initFlowbite();
 
-    await api.get('/api/categories').then(response => {
-        availableCategories.value = response.data;
-    }).catch(error => {
-        errors.value = error.response.data.errors;
-    })
+    if (availableCategories.value.length == 0) {
+        await api.get('/api/categories').then(response => {
+            availableCategories.value = response.data;
+        }).catch(error => {
+            errors.value = error.response.data.errors;
+        })
+    }
 })
 
 async function enviarVideo() {
@@ -50,8 +55,6 @@ async function enviarVideo() {
     formData.append('video', videoFile.file);
     formData.append('thumbnail', videoFile.thumb);
 
-    console.log(videoFile.categories)
-
     await api.post('/api/profile/video', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -59,8 +62,14 @@ async function enviarVideo() {
     }).then((response) => {
         videoFile.file = null;
         videoFile.thumb = null;
+        videoFile.title = '';
+        videoFile.description = '';
+        videoFile.categories = [];
+        errors.value = null;
+        uploadStatus.value = true;
+        closeModal('crud-modal');
     }
-    ).catch (error => {
+    ).catch(error => {
         errors.value = error.response.data.errors;
     })
 }
@@ -70,6 +79,8 @@ const translations = getTranslations();
 
 <template>
     <MainLayout>
+        <SuccessNotification v-if="uploadStatus" id="uploadedSuccessfully" :message="translations.videoUploadedSuccessfully" v-model="uploadStatus" />
+
         <ProfileSection :name="translations.history" />
         <ProfileSection name="Playlists" />
 
@@ -88,25 +99,21 @@ const translations = getTranslations();
                     :htmlAttributes="{ minlength: 100, maxlength: 3000 }" v-model="videoFile.description" />
 
                 <!-- Categories -->
-                <Dropdown  btText="Select a category" classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
+                <Dropdown btText="Select a category"
+                    classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
                     <li v-for="availableCategory in availableCategories">
-                        <Checkbox
-                            name="categories"
-                            :value="availableCategory.name"
-                            :text="availableCategory.name.charAt(0).toUpperCase() + availableCategory.name.slice(1)"
-                            :description="availableCategory.description"
-                            v-model="videoFile.categories"
-                        />
+                        <Checkbox name="categories" :value="availableCategory.name" :text="availableCategory.title"
+                            :description="availableCategory.description" v-model="videoFile.categories" />
                     </li>
                 </Dropdown>
 
                 <!-- Video -->
                 <p class="text-black dark:text-white">{{ translations.videoFile }}</p>
-                <Dropfile name="video" v-model="videoFile.file" />
+                <Dropfile name="video" fileTypes="MP4, MOV, AVI, WMV, MAX: 20MB" v-model="videoFile.file" />
 
                 <!-- Thumb -->
                 <p class="text-black dark:text-white">{{ translations.thumbFile }}</p>
-                <Dropfile name="thumbnail" v-model="videoFile.thumb" />
+                <Dropfile name="thumbnail" fileTypes="JPG, JPEG, PNG, MAX: 2MB" v-model="videoFile.thumb" />
 
                 <Submit :text="translations.addANewVideo" />
             </form>
