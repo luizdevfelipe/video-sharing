@@ -20,11 +20,7 @@ onMounted(() => {
         </section>
 
         <section id="sessionStatus" class="mb-4 font-medium text-sm text-center text-green-600">
-            <!-- @if (session('status') == 'verification-link-sent')
-                {{ __('auth.resend-success') }}
-            @else
-                {{ session('status') }}
-            @endif -->
+            <slot name="success" />
         </section>
     </main>
 </template>
