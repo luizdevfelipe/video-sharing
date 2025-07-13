@@ -13,22 +13,16 @@ const router = createRouter({
       meta: { public: true }
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/HomeView.vue'),
-      meta: { public: true }
-    },
-    {
       path: '/login',
       name: 'login',
       component: () => import('../views/auth/LoginView.vue'),
-      meta: { public: true }
+      meta: { autenticationPage: true }
     },
     {
       path: '/register',
       name: 'register',
       component: () => import('../views/auth/RegisterView.vue'),
-      meta: { public: true }
+      meta: { autenticationPage: true }
     },
      {
       path: '/profile',
@@ -52,6 +46,12 @@ const router = createRouter({
       path: '/two-factor-challenge',
       name: 'two-factor-challenge',
       component: () => import('../views/auth/TwoFactorChallenge.vue'),
+      meta: { public: true }
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: () => import('../views/auth/ForgotPassword.vue'),
       meta: { public: true }
     }
   ],
