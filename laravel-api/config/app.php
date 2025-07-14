@@ -123,4 +123,22 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+     |--------------------------------------------------------------------------
+     | SPA Domain
+     |--------------------------------------------------------------------------
+     |
+     | This value is the domain of your Single Page Application (SPA).
+     | It is used to configure Sanctum for stateful authentication.
+     | Make sure to set this to the correct domain where your SPA is hosted.
+     | This is important for CSRF protection and session management.
+     | You can set it in your .env file as SANCTUM_STATEFUL_DOMAINS.
+     | Example: SANCTUM_STATEFUL_DOMAINS=127.0.0.1:5173
+     | Make sure to include the port if your SPA runs on a specific port.
+     | This is particularly useful during development when using tools like Vite.
+     */
+    'spa' => [
+        'domain' => env('SANCTUM_STATEFUL_DOMAINS')
+    ]
+
 ];

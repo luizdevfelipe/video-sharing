@@ -18,8 +18,10 @@ async function submitForm() {
             email: email.value
         }).then(response => {
             returnMessage.success = response.data.message;
+            returnMessage.error = null;
         }).catch(error => {
             returnMessage.error = error.response.data.message;
+            returnMessage.success = null;
         })
     });
 }
@@ -38,7 +40,7 @@ const translations = getTranslations();
         </form>
 
         <template #errors>
-            <p v-if="returnMessage.errors !== null">{{ returnMessage.errors }}</p>
+            <p v-if="returnMessage.error !== null">{{ returnMessage.error }}</p>
         </template>
 
         <template #success>

@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -132,6 +133,11 @@ class FortifyServiceProvider extends ServiceProvider
             }
 
             return null;
+        });
+
+        ResetPassword::createUrlUsing(function ($notifiable, string $token) {
+            $url = 'http://127.0.0.1:5173/reset-password/' . $token . '?email=' . urlencode($notifiable->getEmailForPasswordReset());
+            return $url;
         });
 
         RateLimiter::for('login', function (Request $request) {
