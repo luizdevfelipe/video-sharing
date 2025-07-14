@@ -24,7 +24,7 @@ const router = createRouter({
       component: () => import('../views/auth/RegisterView.vue'),
       meta: { autenticationPage: true }
     },
-     {
+    {
       path: '/profile',
       name: 'profile-index',
       component: () => import('../views/profile/ProfileIndex.vue'),
@@ -49,16 +49,36 @@ const router = createRouter({
       meta: { public: true }
     },
     {
-      path: '/reset-password',
-      name: 'reset-password',
+      path: '/forgot-password',
+      name: 'forgot-password',
       component: () => import('../views/auth/ForgotPassword.vue'),
       meta: { public: true }
+    },
+    {
+      path: '/reset-password/:token',
+      name: 'reset-password',
+      component: () => import('../views/auth/ResetPassword.vue'),
+      meta: { public: true }
+    },
+    {
+      path: '/verify-email',
+      name: 'verify-email',
+      component: () => import('../views/auth/VerifyEmail.vue'),
+      meta: { autenticationPage: true }
     }
   ],
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (user.value != null) return next();
+
+  if (to.meta.public) {
+    return next();
+  } else if (to.meta.autenticationPage) {
+    if (user.value) {
+      return next('/');
+    }
+    return next();
+  }
 
   try {
     user.value = await api.get('/api/user').then(res => res.data);
@@ -67,7 +87,6 @@ router.beforeEach(async (to, from, next) => {
     if (to.meta.requiresAuth) {
       next('/login');
     }
-    next();
   }
 });
 
