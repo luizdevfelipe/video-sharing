@@ -57,7 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
 
                 // Email verification
                 if (Features::enabled(Features::emailVerification())) {
-                    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, '__invoke']);
+                    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store']);
                     Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])->name('verification.verify');
                 }
 
@@ -135,8 +135,12 @@ class FortifyServiceProvider extends ServiceProvider
             return null;
         });
 
+        Fortify::verifyEmailView(function () {
+            return redirect(config('app.spa.domain'). '/verify-email');
+        });
+
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            $url = 'http://127.0.0.1:5173/reset-password/' . $token . '?email=' . urlencode($notifiable->getEmailForPasswordReset());
+            $url = 'http://'.config('app.spa.domain').'\/reset-password/' . $token . '?email=' . urlencode($notifiable->getEmailForPasswordReset());
             return $url;
         });
 
