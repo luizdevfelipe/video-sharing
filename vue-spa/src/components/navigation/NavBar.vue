@@ -4,7 +4,7 @@ import api from '../../../services/api.js';
 import { onMounted } from 'vue';
 import { initFlowbite } from 'flowbite';
 import { getTranslations } from '@/assets/js/translations';
-import { user } from '@/composables/useUser.js';
+import { user } from '@/stores/user.js';
 
 onMounted(() => {
     initFlowbite();

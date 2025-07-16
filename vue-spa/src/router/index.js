@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import api from '../../services/api.js';
-import { user } from '@/composables/useUser.js'
+import { user } from '@/stores/user.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,13 +28,13 @@ const router = createRouter({
       path: '/profile',
       name: 'profile-index',
       component: () => import('../views/profile/ProfileIndex.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, requiresVerify: true }
     },
     {
       path: '/profile/settings',
       name: 'profile-settings',
       component: () => import('../views/profile/Settings.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, requiresVerify: true }
     },
     {
       path: '/confirm-password',
@@ -64,30 +64,49 @@ const router = createRouter({
       path: '/verify-email',
       name: 'verify-email',
       component: () => import('../views/auth/VerifyEmail.vue'),
-      meta: { autenticationPage: true }
+      meta: { requiresAuth: true, requiresVerify: true }
     }
   ],
 })
 
 router.beforeEach(async (to, from, next) => {
 
+  if (!user.value) {
+    try {
+      user.value = await api.get('/api/user').then(res => res.data);
+    } catch (error) {
+      if (to.meta.requiresAuth) {
+        return next('/login');
+      }
+    }
+  }
+
   if (to.meta.public) {
     return next();
-  } else if (to.meta.autenticationPage) {
+  } 
+
+  if (to.meta.requiresAuth && !to.meta.requiresVerify) {
+    return next();
+  }
+  
+  if (to.meta.autenticationPage) {
     if (user.value) {
       return next('/');
     }
     return next();
   }
 
-  try {
-    user.value = await api.get('/api/user').then(res => res.data);
-    next();
-  } catch (error) {
-    if (to.meta.requiresAuth) {
-      next('/login');
+  if (to.meta.requiresVerify) {
+    if (user.value && !user.value.email_verified_at && to.path !== '/verify-email') {
+      return next('/verify-email');
+    } else if (!user.value) {
+      return next('/login');
+    } else if (user.value.email_verified_at && to.path === '/verify-email') {
+      return next('/');
     }
+    return next();
   }
+
 });
 
 export default router

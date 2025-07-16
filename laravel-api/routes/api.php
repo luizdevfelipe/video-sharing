@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Route;
  * The 'auth:sanctum' middleware ensures that the user is authenticated via Sanctum.
  * The 'verified' middleware ensures that the user has verified their email address.
  */
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json($request->user());
-    });
+    })->withoutMiddleware(['verified'])->name('user');
 
     /**
      * Route group for profile pages
