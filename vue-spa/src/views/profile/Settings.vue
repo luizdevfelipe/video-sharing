@@ -2,7 +2,7 @@
 import Button from '@/components/navigation/Button.vue';
 import MainLayout from '../layouts/MainLayout.vue';
 import { getTranslations } from '@/assets/js/translations';
-import { user } from '@/composables/useUser.js'
+import { user } from '@/stores/user.js'
 import api from '../../../services/api.js';
 import { ref, onMounted } from 'vue';
 import { getCodes, newCodes, remove2FA } from '@/assets/js/2FA/manage2FA.js';
