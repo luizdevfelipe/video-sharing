@@ -144,7 +144,8 @@ return [
     */
 
     'features' => [
-        Features::twoFactorAuthentication()
+        Features::twoFactorAuthentication(),
+        Features::emailVerification(),
     ],
 
 ];
