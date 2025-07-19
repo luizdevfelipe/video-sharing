@@ -138,7 +138,8 @@ return [
      | This is particularly useful during development when using tools like Vite.
      */
     'spa' => [
-        'domain' => env('SANCTUM_STATEFUL_DOMAINS')
+        'domain' => env('SANCTUM_STATEFUL_DOMAINS'),
+        'domain-link' => 'http://'. env('SANCTUM_STATEFUL_DOMAINS'),
     ]
 
 ];
