@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
             // Route::get('/videos', 'showEditVideos')->name('edit-videos'); TODO
         });
-        
+
     /**
      * Route group for categories
      */
@@ -40,4 +41,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
  */
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');
+});
+
+Route::controller(VideoController::class)->prefix('/video')->name('video')->group(function () {
+    Route::get('/', 'getVideosData')->name('videos');
+    Route::get('/thumb/{fileName}', 'getVideoThumb')->name('thumbnail');
 });
