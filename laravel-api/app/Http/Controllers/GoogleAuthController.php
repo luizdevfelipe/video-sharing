@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,7 @@ class GoogleAuthController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function logIn(): RedirectResponse
+    public function redirect(): RedirectResponse
     {
         return Socialite::driver('google')->redirect();
     }
@@ -23,30 +24,25 @@ class GoogleAuthController extends Controller
     /**
      * Function that authenticates the user through Google Account.
      * 
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function authenticate(): RedirectResponse
+    public function authenticate(): JsonResponse
     {
         $googleUser = Socialite::driver('google')->user();
 
         $user = User::where('google_id', $googleUser->id)->first();
 
-        if ($user) {
-            Auth::login($user);
-            return redirect()->route('home.index');
-        } else {
-            $createdUser = User::create([
+        if (!$user) {
+            $user = User::create([
                 'name'      => $googleUser->name,
                 'email'     => $googleUser->email,
                 'password'  => Hash::make(bin2hex(random_bytes(24)) . time()),
                 'google_id' => $googleUser->id,
             ]);
-
-            if ($createdUser) {
-                Auth::login($createdUser);
-                return redirect()->route('home.index');
-            }
         }
-        return redirect()->route('auth.login');
+
+        Auth::login($user);
+
+        return response()->json(['message' => 'Autenticated']);
     }
 }
