@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Video;
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Storage;
 
 class VideoService
@@ -42,6 +44,62 @@ class VideoService
         }
 
         return $video->id;
+    }
+
+    /**
+     * Converts a video file to HLS (HTTP Live Streaming) format.
+     *
+     * This method first transcodes the input video to MP4 using the x264 codec and AAC audio,
+     * then generates HLS segments and playlist (.m3u8) using FFmpeg.
+     *
+     * @param string $inputPath Path to the input video file.
+     * @return string Path to the generated .m3u8 playlist file.
+     * @throws \RuntimeException If the HLS conversion process fails.
+     */
+    public function convertToHLS($inputPath): string
+    {
+        $ffmpeg = FFMpeg::create([
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+            'ffprobe.binaries' => '/usr/bin/ffprobe',
+            'timeout'          => 3600,
+            'ffmpeg.threads'   => 12,
+        ]);
+
+        $video = $ffmpeg->open($inputPath);
+
+        $format = new X264('aac', 'libx264');
+        $format->setAudioKiloBitrate(128);
+        $format->setKiloBitrate(1000);
+
+        dd($outputBase = str_replace(['mp4', 'mov', 'avi', 'wmv'], '', $inputPath));
+
+        $video->save($format, "{$outputBase}.mp4");
+
+        // Gera HLS usando comandos extras
+        $command = [
+            '-i',
+            "{$outputBase}.mp4",
+            '-codec:',
+            'copy',
+            '-start_number',
+            '0',
+            '-hls_time',
+            '10',
+            '-hls_list_size',
+            '0',
+            '-f',
+            'hls',
+            "{$outputBase}.m3u8"
+        ];
+
+        $process = new \Symfony\Component\Process\Process(array_merge(['/usr/bin/ffmpeg'], $command));
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException($process->getErrorOutput());
+        }
+
+        return "{$outputBase}.m3u8";
     }
 
     public function storageVideo($file)
