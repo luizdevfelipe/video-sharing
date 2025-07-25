@@ -71,9 +71,9 @@ class VideoService
         $format->setAudioKiloBitrate(128);
         $format->setKiloBitrate(1000);
 
-        dd($outputBase = str_replace(['mp4', 'mov', 'avi', 'wmv'], '', $inputPath));
+        $outputBase = str_replace(['.mp4', '.mov', '.avi', '.wmv'], '', $inputPath);
 
-        $video->save($format, "{$outputBase}.mp4");
+        $video->save($format, "$outputBase" . "-converted.mp4");
 
         // Gera HLS usando comandos extras
         $command = [
