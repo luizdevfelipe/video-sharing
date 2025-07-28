@@ -15,10 +15,12 @@ import { getTranslations } from '@/assets/js/translations';
 import { ref, reactive, onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import { closeModal } from '@/assets/js/modal.js';
+import LoadingComponent from '@/components/icons/LoadingComponent.vue';
 
 const availableCategories = ref([]);
 const errors = ref(null);
 const uploadStatus = ref(false);
+const isProcessing = ref(false);
 
 const videoFile = reactive({
     title: '',
@@ -45,6 +47,7 @@ async function enviarVideo() {
         alert(translations.selectVideoAndThumb);
         return
     }
+    isProcessing.value = true;
 
     const formData = new FormData();
     formData.append('title', videoFile.title);
@@ -72,6 +75,8 @@ async function enviarVideo() {
     ).catch(error => {
         errors.value = error.response.data.errors;
     })
+
+    isProcessing.value = false;
 }
 
 const translations = getTranslations();
@@ -79,7 +84,8 @@ const translations = getTranslations();
 
 <template>
     <MainLayout>
-        <SuccessNotification v-if="uploadStatus" id="uploadedSuccessfully" :message="translations.videoUploadedSuccessfully" v-model="uploadStatus" />
+        <SuccessNotification v-if="uploadStatus" id="uploadedSuccessfully"
+            :message="translations.videoUploadedSuccessfully" v-model="uploadStatus" />
 
         <ProfileSection :name="translations.history" />
         <ProfileSection name="Playlists" />
@@ -115,7 +121,10 @@ const translations = getTranslations();
                 <p class="text-black dark:text-white">{{ translations.thumbFile }}</p>
                 <Dropfile name="thumbnail" fileTypes="JPG, JPEG, PNG, MAX: 2MB" v-model="videoFile.thumb" />
 
-                <Submit :text="translations.addANewVideo" />
+                <Submit v-if="!isProcessing" :text="translations.addANewVideo" />
+
+                <LoadingComponent v-if="isProcessing" :text="translations.uploadingVideo" />
+
             </form>
 
             <ErrorSection v-if="errors !== null">
