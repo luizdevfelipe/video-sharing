@@ -4,9 +4,14 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Video;
+use Exception;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Input\Input;
+
+use function PHPUnit\Framework\directoryExists;
+use function PHPUnit\Framework\fileExists;
 
 class VideoService
 {
@@ -73,12 +78,22 @@ class VideoService
 
         $outputBase = str_replace(['.mp4', '.mov', '.avi', '.wmv'], '', $inputPath);
 
-        $video->save($format, "$outputBase" . "-converted.mp4");
+        $fileName = basename($outputBase);
+        
+        if (is_dir($outputBase)) {
+            throw new Exception('Error during the process: Output directory already exists.');
+        }
+        
+        mkdir($outputBase);
+        
+        $outputBase = str_replace($fileName, $fileName. '/' .$fileName, $outputBase);
+
+        $video->save($format, $outputBase . "-converted.mp4");
 
         // Gera HLS usando comandos extras
         $command = [
             '-i',
-            "{$outputBase}.mp4",
+            "{$outputBase}-converted.mp4",
             '-codec:',
             'copy',
             '-start_number',
@@ -97,6 +112,10 @@ class VideoService
 
         if (!$process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
+        }
+
+        if (fileExists($inputPath)) {
+            unlink($inputPath);
         }
 
         return "{$outputBase}.m3u8";
