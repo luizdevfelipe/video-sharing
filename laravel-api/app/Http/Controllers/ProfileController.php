@@ -27,7 +27,7 @@ class ProfileController extends Controller
     public function uploadVideo(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'title' => 'bail|required|string|max:255|min:10',
+            'title' => 'bail|required|string|max:35|min:10',
             'description' => 'bail|required|string|max:3000|min:100',
             'categories' => 'bail|required|array|exists:categories,name',
             'video' => 'bail|required|file|mimes:mp4,mov,avi,wmv|max:20480',
