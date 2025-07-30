@@ -14,7 +14,7 @@ import SuccessNotification from '@/components/notification/SuccessNotification.v
 import { getTranslations } from '@/assets/js/translations';
 import { ref, reactive, onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
-import { closeModal } from '@/assets/js/modal.js';
+import { toggleModal } from '@/assets/js/modal.js';
 import LoadingComponent from '@/components/icons/LoadingComponent.vue';
 
 const availableCategories = ref([]);
@@ -57,7 +57,7 @@ async function enviarVideo() {
     })
     formData.append('video', videoFile.file);
     formData.append('thumbnail', videoFile.thumb);
-
+    
     await api.post('/api/profile/video', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -68,9 +68,9 @@ async function enviarVideo() {
         videoFile.title = '';
         videoFile.description = '';
         videoFile.categories = [];
+        toggleModal('crud-modal');
         errors.value = null;
         uploadStatus.value = true;
-        closeModal('crud-modal');
     }
     ).catch(error => {
         errors.value = error.response.data.errors;
@@ -90,14 +90,14 @@ const translations = getTranslations();
         <ProfileSection :name="translations.history" />
         <ProfileSection name="Playlists" />
 
-        <UploadVideoModal :modalTitle="translations.addANewVideo" btText="+"
+        <UploadVideoModal modalTarget="crud-modal" :modalTitle="translations.addANewVideo" btText="+"
             classes="absolute z-1 left-1/2 bottom-10 -translate-x-1/2">
 
             <form method="POST" @submit.prevent="enviarVideo" class="p-4 md:p-5">
 
                 <!-- Title -->
                 <TextInput :label="translations.title" name="title" :placeHolder="translations.modalVideoTitlePH"
-                    :htmlAttributes="{ minlength: 10, maxlength: 255, autofocus: true }" v-model="videoFile.title" />
+                    :htmlAttributes="{ minlength: 10, maxlength: 35, autofocus: true }" v-model="videoFile.title" />
 
                 <!-- Description -->
                 <TextArea :label="translations.description" name="description"
