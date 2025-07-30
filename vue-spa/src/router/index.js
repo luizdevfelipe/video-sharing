@@ -65,6 +65,12 @@ const router = createRouter({
       name: 'verify-email',
       component: () => import('../views/auth/VerifyEmail.vue'),
       meta: { requiresAuth: true, requiresVerify: true }
+    },
+    {
+      path: '/video/:id',
+      name: 'show-video',
+      component: () => import('../views/video/Render.vue'),
+      meta: { public: true }
     }
   ],
 })
@@ -107,6 +113,7 @@ router.beforeEach(async (to, from, next) => {
     return next();
   }
 
+  return next('/');
 });
 
 export default router
