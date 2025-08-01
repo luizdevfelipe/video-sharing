@@ -18,8 +18,8 @@ onMounted(() => {
 
 <template>
   <MainLayout>
-    <div v-for="video in videoData" class="grid justify-items-center grid-cols-1 gap-2 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <VideoCard :id="video.id" :title="video.title" :thumb_file="video.thumbnail_path" />
+    <div class="grid justify-items-center grid-cols-1 gap-2 p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <VideoCard v-for="video in videoData" :id="video.id" :title="video.title" :thumb_file="video.thumbnail_path" />
     </div>
   </MainLayout>
 </template>
