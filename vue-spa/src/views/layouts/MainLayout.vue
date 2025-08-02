@@ -14,7 +14,7 @@ onMounted(() => {
          <NavBar />
     </header>
 
-    <main>
+    <main class="text-dark dark:text-white">
         <slot />
     </main>
 
