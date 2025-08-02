@@ -102,7 +102,7 @@ const translations = getTranslations();
                 <!-- Description -->
                 <TextArea :label="translations.description" name="description"
                     :placeHolder="translations.modalVideoDescriptionPH"
-                    :htmlAttributes="{ minlength: 100, maxlength: 3000 }" v-model="videoFile.description" />
+                    :htmlAttributes="{ minlength: 100, maxlength: 350 }" v-model="videoFile.description" />
 
                 <!-- Categories -->
                 <Dropdown btText="Select a category"
