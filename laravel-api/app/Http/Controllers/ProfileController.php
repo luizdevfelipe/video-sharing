@@ -28,7 +28,7 @@ class ProfileController extends Controller
     {
         $data = $request->validate([
             'title' => 'bail|required|string|max:35|min:10',
-            'description' => 'bail|required|string|max:3000|min:100',
+            'description' => 'bail|required|string|max:350|min:100',
             'categories' => 'bail|required|array|exists:categories,name',
             'video' => 'bail|required|file|mimes:mp4,mov,avi,wmv|max:20480',
             'thumbnail' => 'bail|required|file|mimes:jpg,jpeg,png|max:2048',
