@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
+    public function __construct(private readonly Request $request)
+    {
+        
+    }
+    
     public function getVideosData()
     {
         // TODO: include pagination
@@ -27,5 +32,11 @@ class VideoController extends Controller
         $type = Storage::mimeType($localPath);
 
         return response($thumb, 200)->header('Content-Type', $type);
+    }
+
+    public function addComment(int $videoId) {
+        $data = $this->request->validate([
+            'content' => 'required|string|max:1000',
+        ]);
     }
 }

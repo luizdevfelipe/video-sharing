@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoController;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
      * Route group for categories
      */
     Route::get('/categories', [CategoryController::class, 'getCategories'])->name('categories');
+
+    /**
+     * Route group for video management
+     */
+    Route::controller(VideoController::class)->prefix('/video')->name('video.')->group(function () {
+        Route::post('/{videoId}/comment', 'addComment')->name('comment');
+    });
 });
 
 /**
