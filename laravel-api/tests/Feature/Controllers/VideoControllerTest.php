@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\User;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -11,6 +12,20 @@ use Tests\TestCase;
 
 class VideoControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public function createVideoRecordWithGetId(): int
+    {
+        return Video::insertGetId([
+            'title' => 'Test Video',
+            'description' => 'This is a test video.',
+            'video_path' => 'videos/test.mp4',
+            'thumbnail_path' => 'thumbnails/test.png',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
     public function test_can_return_a_thumbnail_image(): void
     {
         Storage::fake('local');
@@ -26,5 +41,38 @@ class VideoControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'image/png');
+    }
+
+    public function test_can_register_a_comment(): void
+    {
+        $videoId = $this->createVideoRecordWithGetId();
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post("api/video/{$videoId}/comment", [
+            'content' => 'This is a test comment.',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'user_id' => $user->id,
+            'content' => 'This is a test comment.',
+        ]);
+    }
+
+    public function test_can_get_video_comments(): void
+    {
+        $videoId = $this->createVideoRecordWithGetId();
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get("api/video/{$videoId}/comment");
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'id',
+            'user',
+            'content',
+        ]);
     }
 }

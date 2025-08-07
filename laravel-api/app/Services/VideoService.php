@@ -8,9 +8,6 @@ use Exception;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Console\Input\Input;
-
-use function PHPUnit\Framework\directoryExists;
 use function PHPUnit\Framework\fileExists;
 
 class VideoService
@@ -121,16 +118,37 @@ class VideoService
         return "{$outputBase}.m3u8";
     }
 
+    /**
+     * Store a video file in the local storage.
+     *
+     * @param $file
+     * @return string The path where the video file is stored.
+     * @throws \Exception If the storage fails.
+     */
     public function storageVideo($file)
     {
         return Storage::disk('local')->putFile('videos', $file);
     }
 
+    /**
+     * Store a thumbnail image in the local storage.
+     *
+     * @param $file
+     * @return string The path where the thumbnail image is stored.
+     * @throws \Exception If the storage fails.
+     */
     public function storageThumbnail($file)
     {
         return Storage::disk('local')->putFile('thumbnails', $file);
     }
 
+    /**
+     * Delete a video and its associated categories.
+     *
+     * @param int $videoId
+     * @return bool True if the video was deleted, false otherwise.
+     * @throws \Exception If the video does not exist.
+     */
     public function deleteVideo(int $videoId): bool
     {
         $video = Video::find($videoId);
@@ -162,5 +180,22 @@ class VideoService
             'video' => $videoPath,
             'thumbnail' => $thumbnailPath
         ];
+    }
+
+    /**
+     * Get a video by its ID.
+     *
+     * @param int $videoId
+     * @return Video
+     * @throws \Exception If the video does not exist.
+     */
+    public function getVideoById(int $videoId): Video
+    {
+        return Video::findOrFail($videoId);
+    }
+
+    public function getComments(Video $video)
+    {
+        // TODO
     }
 }
