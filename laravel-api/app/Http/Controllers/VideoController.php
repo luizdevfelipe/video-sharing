@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Video;
+use App\Services\CommentService;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class VideoController extends Controller
 {
     public function __construct(
         private readonly Request $request,
-        private readonly VideoService $videoService
+        private readonly VideoService $videoService,
+        private readonly CommentService $commentService
     ) {}
 
     /**
@@ -69,7 +71,8 @@ class VideoController extends Controller
         ]);
 
         return response()->json([
-            'user_id' => $comment->user_id,
+            'id' => $comment->id,
+            'user_name' => $this->request->user()->name,
             'content' => $comment->content
         ], 200);
     }
@@ -78,7 +81,7 @@ class VideoController extends Controller
     {
         $video = $this->videoService->getVideoById($videoId);
 
-        $comments = $this->videoService->getComments($video);
+        $comments = $this->commentService->getComments($video->id);
 
         return response()->json($comments, 200);
     }

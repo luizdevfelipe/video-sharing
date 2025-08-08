@@ -193,9 +193,4 @@ class VideoService
     {
         return Video::findOrFail($videoId);
     }
-
-    public function getComments(Video $video)
-    {
-        // TODO
-    }
 }

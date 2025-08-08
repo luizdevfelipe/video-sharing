@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,6 +24,15 @@ class VideoControllerTest extends TestCase
             'thumbnail_path' => 'thumbnails/test.png',
             'created_at' => now(),
             'updated_at' => now(),
+        ]);
+    }
+
+    public function createVideoComment(int $videoId, int $userId): int
+    {
+        return Comment::insertGetId([
+            'video_id' => $videoId,
+            'user_id' => $userId,
+            'content' => 'This is a test comment.',
         ]);
     }
 
@@ -55,24 +65,30 @@ class VideoControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJson([
-            'user_id' => $user->id,
+            'id' => Comment::select('id')->where('user_id', $user->id)->first()->id,
+            'user_name' => $user->name,
             'content' => 'This is a test comment.',
         ]);
     }
 
     public function test_can_get_video_comments(): void
     {
-        $videoId = $this->createVideoRecordWithGetId();
+        $user = User::factory()->create();        
+        $videoId = $this->createVideoRecordWithGetId();        
 
-        $user = User::factory()->create();
-
+        $this->createVideoComment($videoId, $user->id);
+        $this->createVideoComment($videoId, $user->id);
+        $this->createVideoComment($videoId, $user->id);
+        
         $response = $this->actingAs($user)->get("api/video/{$videoId}/comment");
-
+        
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'id',
-            'user',
-            'content',
+            '*' => [
+                'id',
+                'user_name',
+                'content',
+            ],
         ]);
     }
 }
