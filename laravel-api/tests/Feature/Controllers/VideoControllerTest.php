@@ -84,10 +84,12 @@ class VideoControllerTest extends TestCase
         
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            '*' => [
-                'id',
-                'user_name',
-                'content',
+            'data' => [
+                '*' => [
+                    'id',
+                    'user_name',
+                    'content',
+                ],
             ],
         ]);
     }

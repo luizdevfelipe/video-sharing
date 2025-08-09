@@ -17,7 +17,7 @@ const videoComments = ref([]);
 function getVideoComments() {
     api.get(`/api/video/${route.params.id}/comment`)
     .then((response) => {
-        videoComments.value = response.data;
+        videoComments.value = response.data.data;
     })
     .catch((error) => {
         console.log(error);
@@ -29,15 +29,11 @@ function postComment() {
         content: commentContent.value
     })
     .then((response) => {
-        appendComment(response.data);
+        videoComments.value.unshift(response.data);
     })
     .catch((error) => {
         console.log(error);
     });
-}
-
-function appendComment(commentData) {
-    // add the new comment to the comments array
 }
 
 const translations = getTranslations();
