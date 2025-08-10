@@ -193,4 +193,9 @@ class VideoService
     {
         return Video::findOrFail($videoId);
     }
+
+    public function getVideoData(int $videoId): Video
+    {
+        return Video::select('title', 'description', 'video_path')->findOrFail($videoId);
+    }
 }

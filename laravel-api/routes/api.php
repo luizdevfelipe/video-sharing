@@ -55,4 +55,5 @@ Route::controller(VideoController::class)->prefix('/video')->name('video')->grou
     Route::get('/', 'getVideosData')->name('videos');
     Route::get('/thumb/{fileName}', 'getVideoThumb')->name('thumbnail');
     Route::get('/{videoId}/comment', 'getComments')->name('comments');
+    Route::get('/{videoId}/data', 'getVideoData')->name('video');
 });

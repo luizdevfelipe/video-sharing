@@ -93,4 +93,18 @@ class VideoControllerTest extends TestCase
             ],
         ]);
     }
+
+    public function test_can_get_video_data(): void
+    {
+        $videoId = $this->createVideoRecordWithGetId();
+
+        $response = $this->get("api/video/{$videoId}/data");
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'title',
+            'description',
+            'video_path',
+        ]);
+    }
 }
