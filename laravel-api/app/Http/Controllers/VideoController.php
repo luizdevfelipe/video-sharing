@@ -51,6 +51,41 @@ class VideoController extends Controller
     }
 
     /**
+     * Get the data for a specific video.
+     *
+     * @param int $videoId
+     * @return JsonResponse
+     */
+    public function getVideoData(int $videoId): JsonResponse
+    {
+        $video = $this->videoService->getVideoData($videoId);
+
+        return response()->json(
+            [
+                'title' => $video->title,
+                'description' => $video->description,
+                'video_path' => $video->video_path,
+            ],
+            200
+        );
+    }
+
+    /**
+     * Get the comments for a video.
+     *
+     * @param int $videoId
+     * @return JsonResponse
+     */
+    public function getComments(int $videoId): JsonResponse
+    {
+        $video = $this->videoService->getVideoById($videoId);
+
+        $comments = $this->commentService->getComments($video->id);
+
+        return response()->json($comments, 200);
+    }
+
+    /**
      * Register a comment for a video.
      *
      * @param int $videoId
@@ -75,14 +110,5 @@ class VideoController extends Controller
             'user_name' => $this->request->user()->name,
             'content' => $comment->content
         ], 200);
-    }
-
-    public function getComments(int $videoId)
-    {
-        $video = $this->videoService->getVideoById($videoId);
-
-        $comments = $this->commentService->getComments($video->id);
-
-        return response()->json($comments, 200);
     }
 }
