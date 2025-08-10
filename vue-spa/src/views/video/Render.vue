@@ -7,17 +7,35 @@ import AccordionComponent from '@/components/AccordionComponent.vue';
 import api from '../../../services/api';
 import { getTranslations } from '@/assets/js/translations';
 import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { user } from '@/stores/user.js';
 
 const route = useRoute();
+const videoId = route.params.id;
 const commentContent = ref("");
 const videoComments = ref([]);
 const videoCommentsPage = ref(1);
 const videoCommentsTotalPages = ref(1);
+const videoData = reactive({
+    title: "",
+    description: "",
+    video_path: ""
+});
+
+onMounted(async () => {
+    await api.get(`/api/video/${videoId}/data`)
+        .then((response) => {
+            videoData.title = response.data.title;
+            videoData.description = response.data.description;
+            videoData.video_path = response.data.video_path;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+})
 
 function getVideoComments(page) {
-    api.get(`/api/video/${route.params.id}/comment?page=${page}`)
+    api.get(`/api/video/${videoId}/comment?page=${page}`)
         .then((response) => {
             if (videoComments.value.length > 0) {
                 videoComments.value.push(...response.data.data);
@@ -32,7 +50,7 @@ function getVideoComments(page) {
 }
 
 function postComment() {
-    api.post(`/api/video/${route.params.id}/comment`, {
+    api.post(`/api/video/${videoId}/comment`, {
         content: commentContent.value
     })
         .then((response) => {
@@ -57,10 +75,11 @@ const translations = getTranslations();
                bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
             <section id="video-data"
                 class="border-b md:border-b-0 md:border-r border-gray-300 dark:border-gray-700 pr-4 pb-4 md:pb-0 md:pr-6">
-                <h1 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">Title</h1>
-                <p class="text-base text-gray-700 dark:text-gray-300 mb-4">
-                    Lorem25 -> Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum et, eius magni ipsa sit
-                    aperiam tempora facere, reiciendis nobis eum sint incidunt placeat odit optio.
+                <h1 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100 break-words whitespace-pre-line">
+                    {{ videoData.title }}
+                </h1>
+                <p class="text-base text-gray-700 dark:text-gray-300 mb-4 break-words whitespace-pre-line">
+                    {{ videoData.description }}
                 </p>
             </section>
             <section id="video-comments"
