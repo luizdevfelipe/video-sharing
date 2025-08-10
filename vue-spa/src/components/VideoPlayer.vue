@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="shadow-[0_5px_50px_rgba(0,0,0,0.7)] dark:shadow-[0_5px_50px_rgba(255,255,255,0.16)]">
-        <video ref="videoRef" id="my-player" class="video-js vjs-fluid" controls preload="auto"
+        <video ref="videoRef" id="my-player" class="video-js vjs-fluid" controls preload="auto" autoplay
             data-setup="{}">
             <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4" />
         </video>
