@@ -53,6 +53,28 @@ class VideoControllerTest extends TestCase
         $response->assertHeader('Content-Type', 'image/png');
     }
 
+    public function test_can_return_a_video_file(): void
+    {
+        Storage::fake('local');
+
+        $baseName = 'test';
+        $fileName = 'test.m3u8';
+
+        $path = Storage::disk('local')->putFileAs(
+            "videos/$baseName",
+            UploadedFile::fake()->create($fileName, 1024, 'application/vnd.apple.mpegurl'),
+            $fileName
+        );
+
+        $fileContent = Storage::disk('local')->get($path);
+
+        $response = $this->get('/api/video/' . $fileName);
+
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'application/vnd.apple.mpegurl');
+        $this->assertEquals($fileContent, $response->getContent());
+    }
+
     public function test_can_register_a_comment(): void
     {
         $videoId = $this->createVideoRecordWithGetId();
