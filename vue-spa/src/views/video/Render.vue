@@ -68,7 +68,7 @@ const translations = getTranslations();
     <MainLayout>
         <!-- Main -->
         <section id="video-container" class="mx-auto my-5 w-[100dvw] md:w-[80dvw]">
-            <VideoPlayer />
+            <VideoPlayer :videoPath="videoData.video_path" />
         </section>
 
         <div class="max-w-[1200px] m-auto grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4
