@@ -31,6 +31,21 @@ class VideoController extends Controller
         return Video::select(['id', 'title', 'thumbnail_path'])->paginate(6);
     }
 
+    public function getVideoFile(string $fileName)
+    {
+        $baseName = pathinfo($fileName, PATHINFO_FILENAME);
+
+        $localPath =  "videos/$baseName/$baseName.m3u8";
+        if (!Storage::disk('local')->exists($localPath)) {
+            abort(404);
+        }
+
+        $video = Storage::get($localPath);
+        $type = Storage::mimeType($localPath);
+
+        return response($video, 200)->header('Content-Type', $type);
+    }
+
     /**
      * Get the thumbnail image for a video.
      *
