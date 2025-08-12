@@ -126,7 +126,7 @@ class VideoControllerTest extends TestCase
         $response->assertJsonStructure([
             'title',
             'description',
-            'video_path',
+            'video_file',
         ]);
     }
 }
