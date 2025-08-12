@@ -39,27 +39,23 @@ class VideoServiceTest extends TestCase
         ];
 
         // Act
-        $filePaths = $this->videoService->storageNewUploadedVideoFiles(
+        $filesBasename = $this->videoService->storageNewUploadedVideoFiles(
             $data['video'],
             $data['thumbnail']
         );
 
         // Assert
-        $this->assertIsArray($filePaths);
-        $this->assertArrayHasKey('video', $filePaths);
-        $this->assertArrayHasKey('thumbnail', $filePaths);
-
-        // Verify that files were stored in the correct directories
-        $this->assertTrue(str_starts_with($filePaths['video'], 'videos/'));
-        $this->assertTrue(str_starts_with($filePaths['thumbnail'], 'thumbnails/'));
+        $this->assertIsArray($filesBasename);
+        $this->assertArrayHasKey('video', $filesBasename);
+        $this->assertArrayHasKey('thumbnail', $filesBasename);
 
         // Verify that the files actually exist in storage
-        Storage::assertExists($filePaths['video']);
-        Storage::assertExists($filePaths['thumbnail']);
+        Storage::assertExists('videos/' . $filesBasename['video']);
+        Storage::assertExists('thumbnails/' . $filesBasename['thumbnail']);
 
         // Verify file types (optional but good practice)
-        $this->assertStringContainsString('.mp4', $filePaths['video']);
-        $this->assertStringContainsString('.jpg', $filePaths['thumbnail']);
+        $this->assertStringContainsString('.mp4', $filesBasename['video']);
+        $this->assertStringContainsString('.jpg', $filesBasename['thumbnail']);
     }
 
     public function test_if_can_register_new_video_data(): void

@@ -7,7 +7,7 @@ const props = defineProps({
     thumb_file: String,
 })
 
-const thumb_path = back_url + '/api/video/thumb/' + props.thumb_file.replace('thumbnails/', '')
+const thumb_path = back_url + '/api/video/thumb/' + props.thumb_file
 </script>
 
 <template>
