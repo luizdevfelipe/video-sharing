@@ -173,8 +173,8 @@ class VideoService
      */
     public function storageNewUploadedVideoFiles($video, $thumbnail): array
     {
-        $videoPath = pathinfo($this->storageVideo($video), PATHINFO_BASENAME);
-        $thumbnailPath = pathinfo($this->storageThumbnail($thumbnail), PATHINFO_BASENAME);
+        $videoPath = $this->storageVideo($video);
+        $thumbnailPath = $this->storageThumbnail($thumbnail);
 
         return [
             'video' => $videoPath,
