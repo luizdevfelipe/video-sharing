@@ -35,13 +35,13 @@ class ProfileController extends Controller
 
         $filePaths = $this->videoService->storageNewUploadedVideoFiles($data['video'], $data['thumbnail']);
 
-        $this->videoService->convertToHLS(Storage::disk('local')->path('videos/' . $filePaths['video']));
+        $this->videoService->convertToHLS(Storage::disk('local')->path($filePaths['video']));
 
         $this->videoService->createVideo(
             $data['title'],
             $data['description'],
             $data['categories'],
-            $filePaths['video'],
+            pathinfo($filePaths['video'], PATHINFO_FILENAME),
             $filePaths['thumbnail']
         );
 
