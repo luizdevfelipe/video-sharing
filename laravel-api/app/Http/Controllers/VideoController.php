@@ -79,7 +79,7 @@ class VideoController extends Controller
             [
                 'title' => $video->title,
                 'description' => $video->description,
-                'video_path' => $video->video_path,
+                'video_file' => $video->video_path,
             ],
             200
         );

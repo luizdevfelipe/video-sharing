@@ -19,7 +19,7 @@ const videoCommentsTotalPages = ref(1);
 const videoData = reactive({
     title: "",
     description: "",
-    video_path: ""
+    videoFile: ""
 });
 
 onMounted(async () => {
@@ -27,7 +27,7 @@ onMounted(async () => {
         .then((response) => {
             videoData.title = response.data.title;
             videoData.description = response.data.description;
-            videoData.video_path = response.data.video_path;
+            videoData.videoFile = response.data.video_file;
         })
         .catch((error) => {
             console.error(error);
@@ -68,11 +68,11 @@ const translations = getTranslations();
     <MainLayout>
         <!-- Main -->
         <section id="video-container" class="mx-auto my-5 w-[100dvw] md:w-[80dvw]">
-            <VideoPlayer :videoPath="videoData.video_path" />
+            <VideoPlayer :video_file="videoData.videoFile" />
         </section>
 
         <div class="max-w-[1200px] m-auto grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4
-               bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+        bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
             <section id="video-data"
                 class="border-b md:border-b-0 md:border-r border-gray-300 dark:border-gray-700 pr-4 pb-4 md:pb-0 md:pr-6">
                 <h1 class="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100 break-words whitespace-pre-line">

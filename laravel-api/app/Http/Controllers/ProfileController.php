@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\VideoProcessingService;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -37,12 +36,12 @@ class ProfileController extends Controller
         $filePaths = $this->videoService->storageNewUploadedVideoFiles($data['video'], $data['thumbnail']);
 
         $this->videoService->convertToHLS(Storage::disk('local')->path($filePaths['video']));
-   
+
         $this->videoService->createVideo(
             $data['title'],
             $data['description'],
             $data['categories'],
-            $filePaths['video'],
+            pathinfo($filePaths['video'], PATHINFO_FILENAME),
             $filePaths['thumbnail']
         );
 
