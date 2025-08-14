@@ -43,6 +43,8 @@ class VideoServiceTest extends TestCase
             $data['video'],
             $data['thumbnail']
         );
+        
+        $baseFileName = pathinfo($filePath['video'], PATHINFO_FILENAME);
 
         // Assert
         $this->assertIsArray($filePath);
@@ -52,6 +54,9 @@ class VideoServiceTest extends TestCase
         // Verify that the files actually exist in storage
         Storage::assertExists($filePath['video']);
         Storage::assertExists($filePath['thumbnail']);
+
+        // Verify if the converted file was deleted
+        $this->assertFalse(file_exists($baseFileName.'/'.$baseFileName."-converted.mp4"));
 
         // Verify file types (optional but good practice)
         $this->assertStringContainsString('.mp4', $filePath['video']);
