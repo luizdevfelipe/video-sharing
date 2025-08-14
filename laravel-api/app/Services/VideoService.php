@@ -115,6 +115,10 @@ class VideoService
             unlink($inputPath);
         }
 
+        if (fileExists("$outputBase-converted.mp4")) {
+            unlink("$outputBase-converted.mp4");
+        }
+
         return "{$outputBase}.m3u8";
     }
 
