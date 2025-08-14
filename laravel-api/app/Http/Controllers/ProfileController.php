@@ -42,7 +42,7 @@ class ProfileController extends Controller
             $data['description'],
             $data['categories'],
             pathinfo($filePaths['video'], PATHINFO_FILENAME),
-            $filePaths['thumbnail']
+            pathinfo($filePaths['thumbnail'], PATHINFO_BASENAME)
         );
 
         return response()->json(['message' => 'Video uploaded successfully!'], 200);
