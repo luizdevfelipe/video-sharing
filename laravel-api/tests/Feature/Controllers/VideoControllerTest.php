@@ -36,12 +36,13 @@ class VideoControllerTest extends TestCase
         ]);
     }
 
-    public function videoFileExists($fileName, $baseName, $mimeType): void
+    public function videoFileExists($fileName, $baseName, $content, $mimeType): void
     {
-        $path = Storage::disk('local')->putFileAs(
-            "videos/$baseName",
-            UploadedFile::fake()->create($fileName, 1024, $mimeType),
-            $fileName
+        Storage::fake('local');
+        
+        $path = Storage::disk('local')->put(
+           "videos/$baseName/$fileName",
+           $content
         );
 
         $fileContent = Storage::disk('local')->get($path);
@@ -74,16 +75,18 @@ class VideoControllerTest extends TestCase
     {
         $baseName = 'test';
         $fileName = 'test.ts';
+        $content = file_get_contents(base_path('tests/Fixtures/test.ts'));
         $mimeType = 'video/mp2t';
-        $this->videoFileExists($fileName, $baseName, $mimeType);
+        $this->videoFileExists($fileName, $baseName, $content, $mimeType);
     } 
 
     public function test_can_return_a_index_video_file(): void
     {
         $baseName = 'test';
         $fileName = 'test.m3u8';
+        $content = file_get_contents(base_path('tests/Fixtures/test.m3u8'));
         $mimeType = 'application/vnd.apple.mpegurl';
-        $this->videoFileExists($fileName, $baseName, $mimeType);
+        $this->videoFileExists($fileName, $baseName, $content, $mimeType);
     }
 
     public function test_can_register_a_comment(): void
