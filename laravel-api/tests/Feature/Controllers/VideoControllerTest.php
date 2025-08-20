@@ -40,12 +40,9 @@ class VideoControllerTest extends TestCase
     {
         Storage::fake('local');
         
-        $path = Storage::disk('local')->put(
-           "videos/$baseName/$fileName",
-           $content
-        );
+        Storage::disk('local')->put("videos/$baseName/$fileName", $content);
 
-        $fileContent = Storage::disk('local')->get($path);
+        $fileContent = Storage::disk('local')->get("videos/$baseName/$fileName");
 
         $response = $this->get('/api/video/' . $fileName);
 
@@ -74,8 +71,8 @@ class VideoControllerTest extends TestCase
     public function test_can_return_a_binary_video_file(): void
     {
         $baseName = 'test';
-        $fileName = 'test.ts';
-        $content = file_get_contents(base_path('tests/Fixtures/test.ts'));
+        $fileName = 'test0.ts';
+        $content = file_get_contents(base_path('tests/Fixtures/test0.ts'));
         $mimeType = 'video/mp2t';
         $this->videoFileExists($fileName, $baseName, $content, $mimeType);
     } 

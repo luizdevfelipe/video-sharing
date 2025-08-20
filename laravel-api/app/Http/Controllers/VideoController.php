@@ -33,9 +33,19 @@ class VideoController extends Controller
 
     public function getVideoFile(string $fileName)
     {
+        // if (!$this->videoService->isVideoAccessible($fileName)) {
+        //     abort(403);
+        // }
+
         $baseName = pathinfo($fileName, PATHINFO_FILENAME);
 
-        $localPath =  "videos/$baseName/$baseName.m3u8";
+        if (pathinfo($fileName, PATHINFO_EXTENSION) === 'ts') {
+            $path = substr($baseName, 0, -1);
+            $localPath =  "videos/$path/$baseName.ts";
+        } else {
+            $localPath =  "videos/$baseName/$baseName.m3u8";
+        }
+
         if (!Storage::disk('local')->exists($localPath)) {
             abort(404);
         }
