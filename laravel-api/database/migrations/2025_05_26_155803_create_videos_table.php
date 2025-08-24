@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255);
             $table->string('description', 3000);
+            $table->unsignedTinyInteger('visibility');
             $table->string('video_path');
             $table->string('thumbnail_path');
             $table->timestamps();

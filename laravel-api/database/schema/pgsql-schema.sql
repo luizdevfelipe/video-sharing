@@ -461,6 +461,7 @@ CREATE TABLE public.videos (
     id bigint NOT NULL,
     title character varying(255) NOT NULL,
     description character varying(3000) NOT NULL,
+    visibility smallint NOT NULL,
     video_path character varying(255) NOT NULL,
     thumbnail_path character varying(255) NOT NULL,
     created_at timestamp(0) without time zone,
