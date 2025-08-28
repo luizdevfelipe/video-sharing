@@ -201,6 +201,7 @@ return [
         'description' => 'Descrição',
         'video' => 'Vídeo',
         'thumbnail' => 'Miniatura',
+        'visibility' => 'Visibilidade',
     ],
 
 ];
