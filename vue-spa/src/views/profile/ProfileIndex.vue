@@ -16,6 +16,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
 import { toggleModal } from '@/assets/js/modal.js';
 import LoadingComponent from '@/components/icons/LoadingComponent.vue';
+import Radio from '@/components/inputs/Radio.vue';
 
 const availableCategories = ref([]);
 const errors = ref(null);
@@ -27,7 +28,8 @@ const videoFile = reactive({
     description: '',
     categories: [],
     file: null,
-    thumb: null
+    thumb: null,
+    visibility: null
 });
 
 onMounted(async () => {
@@ -57,7 +59,8 @@ async function enviarVideo() {
     })
     formData.append('video', videoFile.file);
     formData.append('thumbnail', videoFile.thumb);
-    
+    formData.append('visibility', videoFile.visibility);
+
     await api.post('/api/profile/video', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -68,6 +71,7 @@ async function enviarVideo() {
         videoFile.title = '';
         videoFile.description = '';
         videoFile.categories = [];
+        videoFile.visibility = null;
         toggleModal('crud-modal');
         errors.value = null;
         uploadStatus.value = true;
@@ -105,11 +109,28 @@ const translations = getTranslations();
                     :htmlAttributes="{ minlength: 100, maxlength: 350 }" v-model="videoFile.description" />
 
                 <!-- Categories -->
-                <Dropdown btText="Select a category"
+                <Dropdown :btText="translations.selectCategories" id="categories"
                     classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
                     <li v-for="availableCategory in availableCategories">
                         <Checkbox name="categories" :value="availableCategory.name" :text="availableCategory.title"
                             :description="availableCategory.description" v-model="videoFile.categories" />
+                    </li>
+                </Dropdown>
+
+                <!-- Visibility -->
+                <Dropdown :btText="translations.selectVisibility" id="visibilities"
+                    classes="shadow-[0px_0px_0px_4px_rgba(0,0,0,0.75)] dark:shadow-[0px_0px_0px_4px_rgba(255,255,255,0.75)]">
+                    <li>
+                        <Radio name="visibility" value="public" :text="translations.public"
+                            :description="translations.publicDescription" v-model="videoFile.visibility" />
+                    </li>
+                    <li>
+                        <Radio name="visibility" value="protected" :text="translations.protected"
+                            :description="translations.protectedDescription" v-model="videoFile.visibility" />
+                    </li>
+                    <li>
+                        <Radio name="visibility" value="private" :text="translations.private"
+                            :description="translations.privateDescription" v-model="videoFile.visibility" />
                     </li>
                 </Dropdown>
 

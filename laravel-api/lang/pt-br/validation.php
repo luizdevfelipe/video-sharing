@@ -159,7 +159,8 @@ return [
     'uppercase' => 'O campo :attribute deve estar em maiúsculas.',
     'url' => 'O campo :attribute deve ser um URL válido.',
     'ulid' => 'O campo :attribute deve ser um ULID válido.',
-    'uuid' => 'O campo :attribute deve ser um UUID válido.',    
+    'uuid' => 'O campo :attribute deve ser um UUID válido.',
+    'invalid_visibility' => 'A visibilidade selecionada é inválida.',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -200,6 +201,7 @@ return [
         'description' => 'Descrição',
         'video' => 'Vídeo',
         'thumbnail' => 'Miniatura',
+        'visibility' => 'Visibilidade',
     ],
 
 ];

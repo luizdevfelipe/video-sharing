@@ -22,6 +22,7 @@ class VideoControllerTest extends TestCase
             'description' => 'This is a test video.',
             'video_path' => 'videos/test.mp4',
             'thumbnail_path' => 'thumbnails/test.png',
+            'visibility' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

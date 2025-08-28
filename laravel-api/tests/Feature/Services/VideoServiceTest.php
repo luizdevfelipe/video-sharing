@@ -2,6 +2,7 @@
 
 namespace Tests\Services\Feature;
 
+use App\Enums\VideoVisibilityEnum;
 use App\Services\VideoService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -71,6 +72,7 @@ class VideoServiceTest extends TestCase
             'description' => 'This is a test video description.',
             'categories' => ['action', 'drama'],
             'video_path' => 'videos/test_video.mp4',
+            'visibility' => 'public',
             'thumbnail_path' => 'thumbnails/test_thumbnail.jpg',
         ];
         // Act
@@ -78,6 +80,7 @@ class VideoServiceTest extends TestCase
             $data['title'],
             $data['description'],
             $data['categories'],
+            VideoVisibilityEnum::fromStringValue($data['visibility']),
             $data['video_path'],
             $data['thumbnail_path']
         );
