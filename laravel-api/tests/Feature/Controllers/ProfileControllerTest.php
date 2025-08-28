@@ -37,6 +37,7 @@ class ProfileControllerTest extends TestCase
             'description' => 'This is a sample video description that is long enough to meet the validation requirements for the test.',
             'categories' => ['action', 'drama'],
             'video' => $uploadedVideo,
+            'visibility' => 'public',
             'thumbnail' => UploadedFile::fake()->image('thumbnail.jpg', 640, 480)->size(1024),
         ]);
 
