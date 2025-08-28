@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\VideoVisibilityEnum;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,6 +32,7 @@ class ProfileController extends Controller
             'categories' => 'bail|required|array|exists:categories,name',
             'video' => 'bail|required|file|mimes:mp4,mov,avi,wmv|max:20480',
             'thumbnail' => 'bail|required|file|mimes:jpg,jpeg,png|max:2048',
+            'visibility' => 'bail|required|string|in:public,protected,private',
         ]);
 
         $filePaths = $this->videoService->storageNewUploadedVideoFiles($data['video'], $data['thumbnail']);
@@ -41,6 +43,7 @@ class ProfileController extends Controller
             $data['title'],
             $data['description'],
             $data['categories'],
+            VideoVisibilityEnum::fromStringValue($data['visibility']),
             pathinfo($filePaths['video'], PATHINFO_FILENAME),
             pathinfo($filePaths['thumbnail'], PATHINFO_BASENAME)
         );
