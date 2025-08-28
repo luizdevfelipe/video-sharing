@@ -1,8 +1,8 @@
 <script setup>
 const props = defineProps({
     modelValue: {
-        type: [String, Array],
-        default: () => [],
+        type: String,
+        default: () => null,
     },
     name: String,
     value: String,
@@ -10,21 +10,7 @@ const props = defineProps({
     description: String,
 });
 
-const emit = defineEmits(['update:modelValue'])
-
-function toggleCheckbox(event) {
-    const checked = event.target.checked;
-    const current = Array.isArray(props.modelValue) ? [...props.modelValue] : [];
-    let updated;
-
-    if (checked) {
-        updated = [...current, props.value];
-    } else {
-        updated = current.filter(v => v !== props.value);
-    }
-
-    emit('update:modelValue', updated);
-}
+const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
@@ -35,6 +21,8 @@ function toggleCheckbox(event) {
             aria-describedby="helper-radio-text" 
             type="radio" 
             :value="value"
+            :checked="modelValue === value"
+            @input="emit('update:modelValue', $event.target.value);"
             :name="name"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
         </div>
