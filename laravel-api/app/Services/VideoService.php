@@ -26,12 +26,14 @@ class VideoService
         string $title,
         string $description,
         array $categories,
+        int $visibility,
         string $videoPath,
         string $thumbnailPath
     ): int {
         $video = Video::create([
             'title' => $title,
             'description' => $description,
+            'visibility' => $visibility,
             'video_path' => $videoPath,
             'thumbnail_path' => $thumbnailPath,
         ]);
