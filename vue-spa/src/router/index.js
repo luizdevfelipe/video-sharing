@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import api from '../../services/api.js';
-import { user } from '@/stores/user.js'
+import api from '@/services/api.js';
+import { useUserStore } from '@/stores/user.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,44 +76,44 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
 
-  if (!user.value) {
+   if (userStore.user === null) {
     try {
-      user.value = await api.get('/api/user').then(res => res.data);
-    } catch (error) {
-      if (to.meta.requiresAuth) {
-        return next('/login');
-      }
+      await userStore.getUserData()
+    } catch (e) {
+      userStore.user = null
     }
   }
 
   if (to.meta.public) {
     return next();
-  } 
+  }
 
   if (to.meta.requiresAuth && !to.meta.requiresVerify) {
     return next();
   }
-  
+
   if (to.meta.autenticationPage) {
-    if (user.value) {
+    if (userStore.user) {
       return next('/');
     }
     return next();
   }
 
   if (to.meta.requiresVerify) {
-    if (user.value && !user.value.email_verified_at && to.path !== '/verify-email') {
+    if (userStore.user && !userStore.user.email_verified_at && to.path !== '/verify-email') {
       return next('/verify-email');
-    } else if (!user.value) {
+    } else if (!userStore.user) {
       return next('/login');
-    } else if (user.value.email_verified_at && to.path === '/verify-email') {
+    } else if (userStore.user.email_verified_at && to.path === '/verify-email') {
       return next('/');
     }
     return next();
   }
 
   return next('/');
+
 });
 
 export default router

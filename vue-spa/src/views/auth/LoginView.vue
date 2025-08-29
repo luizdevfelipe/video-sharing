@@ -3,8 +3,11 @@ import AuthLayout from '@/views/layouts/AuthLayout.vue';
 import Submit from '@/components/inputs/Submit.vue';
 import TextInput from '@/components/inputs/TextInput.vue';
 import { getTranslations } from '@/assets/js/translations.js';
-import api from '../../../services/api.js';
 import { reactive } from 'vue';
+import { useRouter  } from 'vue-router';
+import api from '@/services/api.js';
+
+const router = useRouter();
 
 const loginCredentials = reactive({
     email: '',
@@ -23,9 +26,9 @@ async function login() {
             remember: loginCredentials.remember
         }).then(response => {
             if (response.data.two_factor) {
-                window.location.href = '/two-factor-challenge';
+               router.push({name: 'two-factor-challenge'});
             } else {
-                window.location.href = '/profile';
+               router.push({name: 'profile-index'});
             }
         }).catch(error => {
             loginCredentials.errors = error.response.data.message;

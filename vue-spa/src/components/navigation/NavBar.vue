@@ -1,21 +1,20 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import api from '../../../services/api.js';
+import { RouterLink, useRouter  } from 'vue-router';
 import { onMounted } from 'vue';
 import { initFlowbite } from 'flowbite';
 import { getTranslations } from '@/assets/js/translations';
-import { user } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user.js';
 
-onMounted(() => {
+const userStore = useUserStore();
+const router = useRouter();
+
+onMounted(async () => {
     initFlowbite();
 })
 
-async function logout() {
-    const result = await api.post('/api/logout')
-    if (result.status === 204) {
-        user.value = null;
-        window.location.href = '/';
-    }
+function disconnect() {
+    userStore.logout();
+    router.push({name: 'home'});
 }
 
 const translations = getTranslations();
@@ -24,7 +23,7 @@ const translations = getTranslations();
 <template>
     <nav class="p-2 flex items-center text-dark bg-gray-200 dark:text-white dark:bg-gray-800">
         <div class="">
-            <RouterLink to="/">VideoSharing</RouterLink>
+            <RouterLink to="/">VideoSharing {{ userStore.user?.name }}</RouterLink>
         </div>
         <form action="" method="get" class="max-w-md mx-auto basis-2/3">
             <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"></label>
@@ -45,7 +44,7 @@ const translations = getTranslations();
             </div>
         </form>
 
-        <button v-if="user != null" id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-dark hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        <button v-if="userStore.user != null" id="dropdownDividerButton" data-dropdown-toggle="dropdownDivider" class="text-dark hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
@@ -73,7 +72,7 @@ const translations = getTranslations();
             </li>
             </ul>
             <div>
-                <form v-on:submit.prevent="logout()" method="post" class="block text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                <form v-on:submit.prevent="disconnect()" method="post" class="block text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                     <button type="submit" class="d-block w-full p-2">
                     LogOut
                     </button>
