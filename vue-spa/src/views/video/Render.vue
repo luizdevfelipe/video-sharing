@@ -4,13 +4,14 @@ import MainLayout from '../layouts/MainLayout.vue';
 import VideoCommentCard from '@/components/cards/VideoCommentCard.vue';
 import VideoRecommendationCard from '@/components/cards/VideoRecommendationCard.vue';
 import AccordionComponent from '@/components/AccordionComponent.vue';
-import api from '../../../services/api';
+import api from '../../services/api';
 import { getTranslations } from '@/assets/js/translations';
 import { useRoute } from 'vue-router';
 import { ref, reactive, onMounted } from 'vue';
-import { user } from '@/stores/user.js';
+import { useUserStore } from '@/stores/user.js';
 
 const route = useRoute();
+const userStore = useUserStore();
 const videoId = route.params.id;
 const commentContent = ref("");
 const videoComments = ref([]);
@@ -90,7 +91,7 @@ const translations = getTranslations();
                         <textarea
                             class="w-full p-2 mb-2 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             :placeholder="translations.writeComment" required v-model="commentContent"></textarea>
-                        <button type="submit" v-if="user"
+                        <button type="submit" v-if="useUserStore.user != null"
                             class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-700">
                             {{ translations.postComment }}
                         </button>
