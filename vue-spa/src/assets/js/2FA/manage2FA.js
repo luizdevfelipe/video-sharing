@@ -1,4 +1,4 @@
-import api from '../../../../services/api.js';
+import api from '@/services/api.js';
 
 export function remove2FA() {
     api.post('api/two-factor-authentication', {

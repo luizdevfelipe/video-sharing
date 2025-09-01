@@ -3,7 +3,7 @@ import AuthLayout from '@/views/layouts/AuthLayout.vue';
 import Submit from '@/components/inputs/Submit.vue';
 import TextInput from '@/components/inputs/TextInput.vue';
 import { getTranslations } from '@/assets/js/translations.js';
-import api from '../../../services/api.js';
+import api from '@/services/api.js';
 import { reactive } from 'vue';
 
 const userData = reactive({

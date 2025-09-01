@@ -2,7 +2,7 @@
 import MainLayout from '@/views/layouts/MainLayout.vue';
 import VideoCard from '@/components/cards/VideoCard.vue'
 import { onMounted, ref } from 'vue';
-import api from '../../services/api.js';
+import api from '@/services/api.js';
 
 const videoData = ref({});
 

@@ -2,7 +2,7 @@
 import Submit from '@/components/inputs/Submit.vue';
 import TextInput from '@/components/inputs/TextInput.vue';
 import AuthLayout from '@/views/layouts/AuthLayout.vue';
-import api from '../../../services/api';
+import api from '@/services/api';
 import { getTranslations } from '@/assets/js/translations';
 import { ref, reactive } from 'vue';
 

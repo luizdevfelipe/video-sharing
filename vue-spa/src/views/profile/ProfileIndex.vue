@@ -9,7 +9,7 @@ import Dropfile from '@/components/inputs/Dropfile.vue';
 import Submit from '@/components/inputs/Submit.vue';
 import Dropdown from '@/components/navigation/Dropdown.vue';
 import TextArea from '@/components/inputs/TextArea.vue';
-import api from '../../../services/api.js';
+import api from '@/services/api.js';
 import SuccessNotification from '@/components/notification/SuccessNotification.vue';
 import { getTranslations } from '@/assets/js/translations';
 import { ref, reactive, onMounted } from 'vue'

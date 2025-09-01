@@ -2,7 +2,7 @@
 import AuthLayout from '@/views/layouts/AuthLayout.vue';
 import TextInput from '@/components/inputs/TextInput.vue';
 import Button from '@/components/navigation/Button.vue';
-import api from '../../../services/api.js';
+import api from '@/services/api.js';
 import { getTranslations } from '@/assets/js/translations';
 import { ref } from 'vue';
 
