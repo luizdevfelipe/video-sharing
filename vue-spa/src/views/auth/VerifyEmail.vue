@@ -1,7 +1,7 @@
 <script setup>
 import AuthLayout from '@/views/layouts/AuthLayout.vue';
 import { getTranslations } from '@/assets/js/translations.js';
-import api from '../../../services/api.js';
+import api from '@/services/api.js';
 import { reactive } from 'vue';
 
 const returnMessage = reactive({

@@ -4,7 +4,7 @@ import MainLayout from '../layouts/MainLayout.vue';
 import VideoCommentCard from '@/components/cards/VideoCommentCard.vue';
 import VideoRecommendationCard from '@/components/cards/VideoRecommendationCard.vue';
 import AccordionComponent from '@/components/AccordionComponent.vue';
-import api from '../../services/api';
+import api from '@/services/api';
 import { getTranslations } from '@/assets/js/translations';
 import { useRoute } from 'vue-router';
 import { ref, reactive, onMounted } from 'vue';

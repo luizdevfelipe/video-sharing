@@ -37,6 +37,12 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerify: true }
     },
     {
+      path: '/profile/videos',
+      name: 'manage-videos',
+      component: () => import('../views/profile/ManageVideos.vue'),
+      meta: { requiresAuth: true, requiresVerify: true }
+    },
+    {
       path: '/confirm-password',
       name: 'confirm-password',
       component: () => import('../views/auth/ConfirmPass.vue'),

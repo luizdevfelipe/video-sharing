@@ -11,7 +11,7 @@ const thumb_path = back_url + '/api/video/thumb/' + props.thumb_file
 </script>
 
 <template>
-    <a :href="`/video/${id}`">
+    <RouterLink :to="`/video/${id}`">
         <div class="bg-gray-200 rounded-t-lg max-w-sm h-80 dark:bg-gray-800">
             <div>
                 <img :src="thumb_path" alt="" class="rounded-t-lg shadow-md dark:shadow-gray-800"
@@ -19,5 +19,5 @@ const thumb_path = back_url + '/api/video/thumb/' + props.thumb_file
             </div>
             <p class="text-dark font-bold text-xl dark:text-white">{{ title }}</p>
         </div>
-    </a>
+    </RouterLink>
 </template>

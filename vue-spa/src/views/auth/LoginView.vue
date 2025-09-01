@@ -66,9 +66,9 @@ async function login() {
                     translations.authGoogleLogin
                     }}</a>
 
-                <a href="/forgot-password"
+                <RouterLink to="/forgot-password"
                     class="bg-gray-100 rounded-sm p-1 hover:shadow-lg text-blue-600 hover:underline dark:text-blue-500 dark:bg-gray-700">{{
-                        translations.authForgotPassword }}?</a>
+                        translations.authForgotPassword }}?</RouterLink>
             </div>
 
             <Submit :text="translations.authSubmit" />

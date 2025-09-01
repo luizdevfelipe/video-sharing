@@ -23,7 +23,7 @@ const translations = getTranslations();
 <template>
     <nav class="p-2 flex items-center text-dark bg-gray-200 dark:text-white dark:bg-gray-800">
         <div class="">
-            <RouterLink to="/">VideoSharing {{ userStore.user?.name }}</RouterLink>
+            <RouterLink to="/">VideoSharing</RouterLink>
         </div>
         <form action="" method="get" class="max-w-md mx-auto basis-2/3">
             <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"></label>
@@ -62,13 +62,13 @@ const translations = getTranslations();
         <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDividerButton">
             <li>
-                <a href="/profile/settings" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.manageAccount }}</a>
+                <RouterLink to="/profile/settings" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.manageAccount }}</RouterLink>
             </li>
             <li>
-                <a href="/profile/videos" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.manageVideos }}</a>
+                <RouterLink to="/profile/videos" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.manageVideos }}</RouterLink>
             </li>
             <li>
-                <a href="/profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.yourProfile }}</a>
+                <RouterLink to="/profile" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ translations.yourProfile }}</RouterLink>
             </li>
             </ul>
             <div>
