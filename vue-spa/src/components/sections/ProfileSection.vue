@@ -16,7 +16,7 @@ const translations = getTranslations();
                     <p>{{ name }}</p>
                 </li>
                 <!-- @endforeach -->
-                <li class="self-end"><a href="#" class="text-blue-400">{{ translations.seeMore }}</a></li>
+                <li class="self-end"><RouterLink to="#" class="text-blue-400">{{ translations.seeMore }}</RouterLink></li>
             </ul>
         </div>
     </section>
