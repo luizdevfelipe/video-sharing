@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\VideoVisibilityEnum;
 use App\Models\Video;
 use App\Services\CommentService;
 use App\Services\VideoService;
@@ -28,15 +29,13 @@ class VideoController extends Controller
         // TODO: include pagination
         // $id = $request->query();
 
-        return Video::select(['id', 'title', 'thumbnail_path'])->paginate(6);
+        return Video::select(['id', 'title', 'thumbnail_path'])
+            ->where('visibility', VideoVisibilityEnum::PUBLIC)
+            ->paginate(6);
     }
 
     public function getVideoFile(string $fileName)
     {
-        // if (!$this->videoService->isVideoAccessible($fileName)) {
-        //     abort(403);
-        // }
-
         $baseName = pathinfo($fileName, PATHINFO_FILENAME);
 
         if (pathinfo($fileName, PATHINFO_EXTENSION) === 'ts') {
