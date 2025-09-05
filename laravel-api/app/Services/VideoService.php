@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\VideoVisibilityEnum;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\Video;
 use Exception;
 use FFMpeg\FFMpeg;
@@ -78,14 +80,14 @@ class VideoService
         $outputBase = str_replace(['.mp4', '.mov', '.avi', '.wmv'], '', $inputPath);
 
         $fileName = basename($outputBase);
-        
+
         if (is_dir($outputBase)) {
             throw new Exception('Error during the process: Output directory already exists.');
         }
-        
+
         mkdir($outputBase);
-        
-        $outputBase = str_replace($fileName, $fileName. '/' .$fileName, $outputBase);
+
+        $outputBase = str_replace($fileName, $fileName . '/' . $fileName, $outputBase);
 
         $video->save($format, $outputBase . "-converted.mp4");
 
@@ -200,8 +202,20 @@ class VideoService
         return Video::findOrFail($videoId);
     }
 
+    public function getVideoByFileOrBaseName(string $name): Video
+    {
+        $baseName = pathinfo($name, PATHINFO_FILENAME);
+        return Video::where('video_path', $baseName)->firstOrFail();
+    }
+
     public function getVideoData(int $videoId): Video
     {
         return Video::select('title', 'description', 'video_path')->findOrFail($videoId);
+    }
+
+    public function isVideoAccessibleByUser(): bool
+    {
+        // TODO
+        return true;
     }
 }
