@@ -28,4 +28,9 @@ class Video extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_video', 'video_id', 'user_id')->withTimestamps();
+    }
 }
