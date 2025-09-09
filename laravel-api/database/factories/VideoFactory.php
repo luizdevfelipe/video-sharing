@@ -20,8 +20,8 @@ class VideoFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
-            'video_path' => 'videos/test.mp4',
-            'thumbnail_path' => 'thumbnails/test.png',
+            'video_path' => 'test',
+            'thumbnail_path' => 'test.png',
             'visibility' => VideoVisibilityEnum::PUBLIC,
         ];
     }
