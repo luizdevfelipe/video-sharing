@@ -28,8 +28,8 @@ class ControlsVideoAccess
         }
 
         if (
-            $video->visibility === VideoVisibilityEnum::PUBLIC ||
-            $video->visibility === VideoVisibilityEnum::PROTECTED
+            $video->visibility == VideoVisibilityEnum::PUBLIC->value ||
+            $video->visibility == VideoVisibilityEnum::PROTECTED->value
         ) {
             return $next($request);
         }
