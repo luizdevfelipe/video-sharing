@@ -10,10 +10,11 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Tests\Traits\VideoTestSetupTrait;
 
 class VideoServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, VideoTestSetupTrait;
     private VideoService $videoService;
 
     /**

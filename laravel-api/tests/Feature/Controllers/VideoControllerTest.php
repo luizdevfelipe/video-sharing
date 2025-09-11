@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Enums\VideoVisibilityEnum;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Video;
@@ -10,23 +11,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Tests\Traits\VideoTestSetupTrait;
 
 class VideoControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function createVideoRecordWithGetId(): int
-    {
-        return Video::insertGetId([
-            'title' => 'Test Video',
-            'description' => 'This is a test video.',
-            'video_path' => 'videos/test.mp4',
-            'thumbnail_path' => 'thumbnails/test.png',
-            'visibility' => 1,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-    }
+    use RefreshDatabase, VideoTestSetupTrait;
 
     public function createVideoComment(int $videoId, int $userId): int
     {
@@ -37,13 +26,16 @@ class VideoControllerTest extends TestCase
         ]);
     }
 
-    public function videoFileExists($fileName, $baseName, $content, $mimeType): void
+    public function videoFileExists($fileName, $baseName, $mimeType): void
     {
-        Storage::fake('local');
-        
-        Storage::disk('local')->put("videos/$baseName/$fileName", $content);
+        $testData = $this->setupVideoFileTest(
+            $fileName, 
+            $baseName, 
+            'public',
+            ['visibility' => VideoVisibilityEnum::PUBLIC]
+        );
 
-        $fileContent = Storage::disk('local')->get("videos/$baseName/$fileName");
+        $fileContent = Storage::disk('local')->get($testData['filePath']);
 
         $response = $this->get('/api/video/' . $fileName);
 
@@ -71,25 +63,25 @@ class VideoControllerTest extends TestCase
     
     public function test_can_return_a_binary_video_file(): void
     {
-        $baseName = 'test';
+        $baseName = 'test0';
         $fileName = 'test0.ts';
-        $content = file_get_contents(base_path('tests/Fixtures/test0.ts'));
         $mimeType = 'video/mp2t';
-        $this->videoFileExists($fileName, $baseName, $content, $mimeType);
+        
+        $this->videoFileExists($fileName, $baseName, $mimeType);
     } 
 
     public function test_can_return_a_index_video_file(): void
     {
         $baseName = 'test';
         $fileName = 'test.m3u8';
-        $content = file_get_contents(base_path('tests/Fixtures/test.m3u8'));
         $mimeType = 'application/vnd.apple.mpegurl';
-        $this->videoFileExists($fileName, $baseName, $content, $mimeType);
+        
+        $this->videoFileExists($fileName, $baseName, $mimeType);
     }
 
     public function test_can_register_a_comment(): void
     {
-        $videoId = $this->createVideoRecordWithGetId();
+        $videoId = Video::factory()->create()->id;
 
         $user = User::factory()->create();
 
@@ -108,7 +100,7 @@ class VideoControllerTest extends TestCase
     public function test_can_get_video_comments(): void
     {
         $user = User::factory()->create();
-        $videoId = $this->createVideoRecordWithGetId();
+        $videoId = Video::factory()->create()->id;
 
         $this->createVideoComment($videoId, $user->id);
         $this->createVideoComment($videoId, $user->id);
@@ -130,7 +122,7 @@ class VideoControllerTest extends TestCase
 
     public function test_can_get_video_data(): void
     {
-        $videoId = $this->createVideoRecordWithGetId();
+        $videoId = Video::factory()->create()->id;
 
         $response = $this->get("api/video/{$videoId}/data");
 
