@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoController;
+use App\Http\Middleware\ControlsVideoAccess;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
      * Route group for video management
      */
     Route::controller(VideoController::class)->prefix('/video')->name('video.')->group(function () {
-        Route::post('/{videoId}/comment', 'addComment')->name('comment');
+        Route::post('/{videoId}/comment', 'addComment')->name('.new-comment');
     });
 });
 
@@ -52,9 +53,9 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(VideoController::class)->prefix('/video')->name('video')->group(function () {
-    Route::get('/', 'getVideosData')->name('videos');
-    Route::get('/thumb/{fileName}', 'getVideoThumb')->name('thumbnail');
-    Route::get('/{fileName}', 'getVideoFile')->name('video');
-    Route::get('/{videoId}/comment', 'getComments')->name('comments');
-    Route::get('/{videoId}/data', 'getVideoData')->name('video.data');
+    Route::get('/', 'getVideosData')->name('.videos');
+    Route::get('/thumb/{fileName}', 'getVideoThumb')->name('.thumbnail');
+    Route::get('/{fileName}', 'getVideoFile')->name('.file')->middleware(ControlsVideoAccess::class);
+    Route::get('/{videoId}/comment', 'getComments')->name('.comments');
+    Route::get('/{videoId}/data', 'getVideoData')->name('.data');
 });
