@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\VideoVisibilityEnum;
+use App\Helpers\VideoPathHelper;
 use App\Models\Video;
 use App\Services\CommentService;
 use App\Services\VideoService;
@@ -36,14 +37,7 @@ class VideoController extends Controller
 
     public function getVideoFile(string $fileName)
     {
-        $baseName = pathinfo($fileName, PATHINFO_FILENAME);
-
-        if (pathinfo($fileName, PATHINFO_EXTENSION) === 'ts') {
-            $path = substr($baseName, 0, -1);
-            $localPath =  "videos/$path/$baseName.ts";
-        } else {
-            $localPath =  "videos/$baseName/$baseName.m3u8";
-        }
+        $localPath = VideoPathHelper::generateVideoFileLocalPath($fileName);
 
         if (!Storage::disk('local')->exists($localPath)) {
             abort(404);

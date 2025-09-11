@@ -2,25 +2,19 @@
 
 namespace Tests\Services\Feature;
 
-use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
+use Tests\Traits\VideoTestSetupTrait;
 
 class ControlsVideoAccessTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, VideoTestSetupTrait;
 
-    public function test_if_the_video_data_is_blocked() 
+    public function test_if_the_video_file_is_blocked_by_null_user() 
     {
-        Storage::fake('local');
+        $testData = $this->setupPrivateVideoTest('test0.ts');
 
-        $baseName = 'test';
-        $fileName = 'test0.ts';
-        $content = file_get_contents(base_path('tests/Fixtures/test0.ts'));
-        Storage::disk('local')->put("videos/$baseName/$fileName", $content);
-
-        $response = $this->get('/api/video/' . $fileName);
+        $response = $this->get('/api/video/' . $testData['fileName']);
         $response->assertStatus(403);
     }
 }
