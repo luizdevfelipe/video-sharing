@@ -197,25 +197,25 @@ class VideoService
      * @return Video
      * @throws \Exception If the video does not exist.
      */
-    public function getVideoById(int $videoId): Video
+    public function getVideoById(int $videoId): Video|null
     {
-        return Video::findOrFail($videoId);
+        return Video::find($videoId);
     }
 
-    public function getVideoByFileOrBaseName(string $name): Video
+    public function getVideoByFileOrBaseName(string $name): Video|null
     {
         $baseName = pathinfo($name, PATHINFO_FILENAME);
-        return Video::where('video_path', $baseName)->firstOrFail();
+        return Video::where('video_path', $baseName)->first();
     }
 
-    public function getVideoData(int $videoId): Video
+    public function getVideoData(int $videoId): Video|null
     {
-        return Video::select('title', 'description', 'video_path')->findOrFail($videoId);
+        return Video::select('title', 'description', 'video_path')->find($videoId);
     }
 
     public function isVideoAccessibleByUser(): bool
     {
         // TODO
-        return true;
+        return false;
     }
 }
