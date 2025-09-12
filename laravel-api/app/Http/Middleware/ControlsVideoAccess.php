@@ -24,7 +24,7 @@ class ControlsVideoAccess
         $video = $this->videoService->getVideoByFileOrBaseName($fileName);
 
         if (!$video) {
-            abort(204, __('status.video_204'));
+            abort(404, __('status.video_404'));
         }
 
         if (
