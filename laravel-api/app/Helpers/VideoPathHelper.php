@@ -15,4 +15,15 @@ class VideoPathHelper
             return "videos/$baseName/$baseName.m3u8";
         }
     }
+
+    public static function generateVideoFileIdentifier(string $fileName): string
+    {
+        $baseName = pathinfo($fileName, PATHINFO_FILENAME);
+
+        if (pathinfo($fileName, PATHINFO_EXTENSION) === 'ts') {
+            return substr($baseName, 0, -1);
+        } else {
+            return $baseName;
+        }
+    }
 }
