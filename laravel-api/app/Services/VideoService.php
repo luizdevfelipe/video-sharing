@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\VideoVisibilityEnum;
+use App\Helpers\VideoPathHelper;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Video;
@@ -204,7 +205,7 @@ class VideoService
 
     public function getVideoByFileOrBaseName(string $name): Video|null
     {
-        $baseName = pathinfo($name, PATHINFO_FILENAME);
+        $baseName = VideoPathHelper::generateVideoFileIdentifier($name);
         return Video::where('video_path', $baseName)->first();
     }
 

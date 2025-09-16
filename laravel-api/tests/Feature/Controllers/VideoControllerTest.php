@@ -34,11 +34,11 @@ class VideoControllerTest extends TestCase
             'public',
             ['visibility' => VideoVisibilityEnum::PUBLIC]
         );
-
-        $fileContent = Storage::disk('local')->get($testData['filePath']);
-
+        
+        $fileContent = $testData['content'];
+        
         $response = $this->get('/api/video/' . $fileName);
-
+        
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', $mimeType);
         $this->assertEquals($fileContent, $response->getContent());
