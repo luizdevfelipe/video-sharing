@@ -12,7 +12,7 @@ trait VideoTestSetupTrait
      * Setup a video file test with storage fake and video creation
      *
      * @param string $fileName The name of the fixture file (e.g., 'test0.ts')
-     * @param string $baseName The base name for video_path (must be provided by the user)
+     * @param string $baseName The base name for video_path (e.g., 'test0')
      * @param string $visibility The visibility of the video ('private' or 'public')
      * @param array $videoAttributes Additional attributes for the video factory
      * @return array Returns an array with video, fileName, content, filePath, and baseName
@@ -33,9 +33,10 @@ trait VideoTestSetupTrait
 
         $content = file_get_contents($fixturePath);
         $filePath = VideoPathHelper::generateVideoFileLocalPath($fileName);
+        $identifier = VideoPathHelper::generateVideoFileIdentifier($fileName);
 
         $defaultAttributes = [
-            'video_path' => $baseName,
+            'video_path' => $identifier,
         ];
 
         // Create video with appropriate visibility
