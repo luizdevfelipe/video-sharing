@@ -39,7 +39,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
      * Route group for video management
      */
     Route::controller(VideoController::class)->prefix('/video')->name('video.')->group(function () {
-        Route::post('/{videoId}/comment', 'addComment')->name('.new-comment');
+        Route::post('/{videoId}/comment', 'addComment')->name('.new-comment')->middleware(ControlsVideoAccess::class);
     });
 });
 
@@ -53,9 +53,13 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(VideoController::class)->prefix('/video')->name('video')->group(function () {
-    Route::get('/', 'getVideosData')->name('.videos');
+    Route::get('/', 'getVideosData')->name('.videos')->name('recommend');
+
     Route::get('/thumb/{fileName}', 'getVideoThumb')->name('.thumbnail');
-    Route::get('/{fileName}', 'getVideoFile')->name('.file')->middleware(ControlsVideoAccess::class);
-    Route::get('/{videoId}/comment', 'getComments')->name('.comments');
-    Route::get('/{videoId}/data', 'getVideoData')->name('.data');
+
+    Route::middleware([ControlsVideoAccess::class])->group(function () {
+        Route::get('/{fileName}', 'getVideoFile')->name('.file');
+        Route::get('/{videoId}/comment', 'getComments')->name('.comments');
+        Route::get('/{videoId}/data', 'getVideoData')->name('.data');
+    });
 });
