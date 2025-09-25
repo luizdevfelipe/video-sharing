@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import api from '@/services/api.js';
 import { useUserStore } from '@/stores/user.js'
 
 const router = createRouter({

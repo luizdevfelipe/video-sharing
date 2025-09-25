@@ -19,9 +19,15 @@ class ControlsVideoAccess
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $fileName = $request->route('fileName');
-
-        $video = $this->videoService->getVideoByFileOrBaseName($fileName);
+        $identifier = $request->route('fileName') ?? $request->route('videoId');
+        
+        if ($identifier === null) {
+            abort(400, __('status.bad_request'));
+        } else if (is_numeric($identifier) && intval($identifier) == $identifier) {
+            $video = $this->videoService->getVideoById($identifier);
+        } else {
+            $video = $this->videoService->getVideoByFileOrBaseName($identifier);
+        }
 
         if (!$video) {
             abort(404, __('status.video_404'));
@@ -38,9 +44,7 @@ class ControlsVideoAccess
             abort(403, __('status.login_required'));
         }
 
-        //TODO: check the permission of the user to access the video through the user_videos table
-
-        if (!app(VideoService::class)->isVideoAccessibleByUser($fileName, $request->user())) {
+        if (!$this->videoService->isVideoAccessibleByUser($video, $request->user())) {
             abort(403, __('status.private_video'));
         }
 
