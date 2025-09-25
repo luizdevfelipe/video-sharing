@@ -214,9 +214,8 @@ class VideoService
         return Video::select('title', 'description', 'video_path')->find($videoId);
     }
 
-    public function isVideoAccessibleByUser(): bool
+    public function isVideoAccessibleByUser(Video $video, User $user): bool
     {
-        // TODO
-        return false;
+        return $user->videos()->where('video_id', $video->id)->exists();
     }
 }
