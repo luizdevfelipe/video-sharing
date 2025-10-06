@@ -54,8 +54,8 @@ class FortifyServiceProvider extends ServiceProvider
             ->middleware(config('fortify.middleware', ['web']))
             ->group(function () {
                 // Login & logout
-                Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
-                Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
+                // Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
+                // Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
 
                 // Email verification
                 if (Features::enabled(Features::emailVerification())) {

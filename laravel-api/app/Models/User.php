@@ -9,8 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens, TwoFactorAuthenticatable;
@@ -50,8 +51,27 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    /**
+     * The videos that belong to the user.
+     */
     public function videos(): BelongsToMany
     {
         return $this->belongsToMany(Video::class, 'user_video', 'user_id', 'video_id')->withTimestamps();
+    }
+
+     /**
+     * Get the identifier that will be stored in the JWT token.
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return an array with custom claims to be added to the JWT token.
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
