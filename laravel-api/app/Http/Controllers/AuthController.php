@@ -61,20 +61,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Could not create token'], 500);
         }
 
-        $cookie = cookie(
-            'token',                
-            $token,                 
-            auth('api')->factory()->getTTL() * 60,
-            '/',                    
-            null,                   
-            true,                   
-            true,                   
-            false,                  
-            'Strict'                
-        );
-
-        return response()->json(['message' => 'Login realizado com sucesso'])
-            ->cookie($cookie);
+        return response()->json(['token' => $token]);
     }
 
     /**
