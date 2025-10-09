@@ -4,10 +4,12 @@ import Submit from '@/components/inputs/Submit.vue';
 import TextInput from '@/components/inputs/TextInput.vue';
 import { getTranslations } from '@/assets/js/translations.js';
 import { reactive } from 'vue';
-import { useRouter  } from 'vue-router';
+import { useRouter } from 'vue-router';
 import api from '@/services/api.js';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const loginCredentials = reactive({
     email: '',
@@ -19,22 +21,17 @@ const loginCredentials = reactive({
 const translations = getTranslations();
 
 async function login() {
-    await api.get('/sanctum/csrf-cookie').then(response => {
-        api.post('/api/login', {
-            email: loginCredentials.email,
-            password: loginCredentials.password,
-            remember: loginCredentials.remember
-        }).then(response => {
-            if (response.data.two_factor) {
-               router.push({name: 'two-factor-challenge'});
-            } else {
-               router.push({name: 'profile-index'});
-            }
-        }).catch(error => {
-            loginCredentials.errors = error.response.data.message;
-        });
-    });
-};
+    try {
+        await userStore.login(
+            loginCredentials.email,
+            loginCredentials.password,
+            loginCredentials.remember
+        );
+        router.push({ name: 'home' });
+    } catch (error) {
+        loginCredentials.errors = error.response.data.message;
+    }
+}
 </script>
 
 <template>
@@ -64,10 +61,11 @@ async function login() {
             <div class="flex relative items-center justify-between mb-5">
                 <a @click="openGoogleLogin" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg dark:bg-gray-700">{{
                     translations.authGoogleLogin
-                    }}</a>
+                }}</a>
 
                 <RouterLink to="/forgot-password"
-                    class="bg-gray-100 rounded-sm p-1 hover:shadow-lg text-blue-600 hover:underline dark:text-blue-500 dark:bg-gray-700">{{
+                    class="bg-gray-100 rounded-sm p-1 hover:shadow-lg text-blue-600 hover:underline dark:text-blue-500 dark:bg-gray-700">
+                    {{
                         translations.authForgotPassword }}?</RouterLink>
             </div>
 
