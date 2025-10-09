@@ -4,6 +4,11 @@ import api from '@/services/api';
 
 export const useUserStore = defineStore('user', () => {
     const user = ref(null);
+    const token = ref(localStorage.getItem('token') || null);
+
+    if (token.value) {
+        api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
+    } 
 
     async function getUserData(force = false) {
         if (!user.value || force) {
@@ -17,12 +22,29 @@ export const useUserStore = defineStore('user', () => {
         return user.value;
     }
 
-    async function logout() {
-        const result = await api.post('/api/logout')
-        if (result.status === 204) {
-            user.value = null;
+    async function login (email, password, remember = false) {
+        try {
+            const res = await api.post('/api/login', { email, password, remember });
+            if (res.data.token) {
+                token.value = res.data.token;
+                localStorage.setItem('token', res.data.token);
+                api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+            }
+        } catch (err) {
+            throw err;
         }
     }
 
-    return { user, getUserData, logout };
+    async function logout() {
+        const result = await api.post('/api/logout')
+        if (result.status === 200) {
+            user.value = null;
+            token.value = null;
+            localStorage.removeItem('token');
+            delete api.defaults.headers.common['Authorization'];
+            window.location.href = '/';
+        }
+    }
+
+    return { user, token, getUserData, login, logout };
 });
