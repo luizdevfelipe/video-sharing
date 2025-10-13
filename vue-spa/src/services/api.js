@@ -6,4 +6,12 @@ const api = axios.create({
   withXSRFToken: true
 })
 
+export function setAuthToken(token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
+export function removeAuthToken() {
+  delete api.defaults.headers.common['Authorization'];
+}
+
 export default api
