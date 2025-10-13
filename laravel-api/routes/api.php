@@ -26,6 +26,7 @@ Route::middleware(['jwt', 'verified'])->group(function () {
         Route::get('/user', 'getUser')->name('user');
         Route::put('/user', 'updateUser')->name('user.update');
         Route::post('/logout', 'logout')->name('logout');
+        Route::post('/refresh-token', 'refreshToken')->name('token.refresh');
     });
 
     /**

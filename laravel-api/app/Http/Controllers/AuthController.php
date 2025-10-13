@@ -111,4 +111,18 @@ class AuthController extends Controller
             return response()->json(['error' => 'Failed to update user'], 500);
         }
     }
+
+    /**
+     * Refresh the JWT token.
+     * @return JsonResponse
+     */
+    public function refreshToken(): JsonResponse
+    {
+        try {
+            $newToken = JWTAuth::refresh();
+            return response()->json(['token' => $newToken]);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to refresh token'], 500);
+        }
+    }
 }

@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import api from '@/services/api';
+import { setAuthToken, removeAuthToken } from '@/services/api';
+import { autoRefreshToken } from '@/services/jwt';
 
 export const useUserStore = defineStore('user', () => {
     const user = ref(null);
     const token = ref(localStorage.getItem('token') || null);
 
     if (token.value) {
-        api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
+        setAuthToken(token.value);
     } 
 
     async function getUserData(force = false) {
@@ -22,13 +24,14 @@ export const useUserStore = defineStore('user', () => {
         return user.value;
     }
 
-    async function login (email, password, remember = false) {
+    async function login(email, password, remember = false) {
         try {
             const res = await api.post('/api/login', { email, password, remember });
             if (res.data.token) {
                 token.value = res.data.token;
                 localStorage.setItem('token', res.data.token);
-                api.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+                setAuthToken(res.data.token);
+                autoRefreshToken(res.data.token);
             }
         } catch (err) {
             throw err;
@@ -41,7 +44,7 @@ export const useUserStore = defineStore('user', () => {
             user.value = null;
             token.value = null;
             localStorage.removeItem('token');
-            delete api.defaults.headers.common['Authorization'];
+            removeAuthToken();
             window.location.href = '/';
         }
     }
