@@ -5,7 +5,6 @@ import TextInput from '@/components/inputs/TextInput.vue';
 import { getTranslations } from '@/assets/js/translations.js';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import api from '@/services/api.js';
 import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
@@ -49,24 +48,19 @@ async function login() {
                         class="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                         v-model="loginCredentials.remember" />
                 </div>
-                <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{
-                    translations.authRememberLabel }}</label>
+                <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ translations.authRememberLabel }}</label>
 
                 <span class="absolute right-0 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    <RouterLink to="/register" class="text-blue-600 hover:underline dark:text-blue-500"> {{
-                        translations.register }} </RouterLink>
+                    <RouterLink to="/register" class="text-blue-600 hover:underline dark:text-blue-500">{{ translations.register }}</RouterLink>
                 </span>
             </div>
 
             <div class="flex relative items-center justify-between mb-5">
-                <a @click="openGoogleLogin" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg dark:bg-gray-700">{{
-                    translations.authGoogleLogin
-                }}</a>
+                <a @click="openGoogleLogin" class="bg-gray-100 rounded-sm p-1 hover:shadow-lg dark:bg-gray-700">{{ translations.authGoogleLogin }}</a>
 
                 <RouterLink to="/forgot-password"
                     class="bg-gray-100 rounded-sm p-1 hover:shadow-lg text-blue-600 hover:underline dark:text-blue-500 dark:bg-gray-700">
-                    {{
-                        translations.authForgotPassword }}?</RouterLink>
+                    {{ translations.authForgotPassword }}?</RouterLink>
             </div>
 
             <Submit :text="translations.authSubmit" />
