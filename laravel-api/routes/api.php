@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Route;
  * AUTHENTICATED ROUTES
  * --------------------------------------------------------------------------
  * These routes require authentication.
- * The 'jwt' middleware ensures that the user is authenticated via JWT.
+ * The 'auth:api' middleware ensures that the user is authenticated via JWT.
  * The 'verified' middleware ensures that the user has verified their email address.
  */
-Route::middleware(['jwt', 'verified'])->group(function () {
+Route::middleware(['auth:api', 'verified'])->group(function () {
     /**
      * --------------------------------------------------------------------------
      * AUTHENTICATED USER ACTIONS
