@@ -15,11 +15,34 @@ const props = defineProps({
     }
 });
 
+// Compute the video path based on the provided video_file prop
+// e.g.: XXX.m3u8 to XXX0.ts to XXX1.ts etc.
 const videoPath = computed(() => {
     if (!props.video_file) return "";
     return `${back_url}/api/video/${props.video_file}.m3u8`;
 });
 
+// Add Authorization header to video.js requests if token exists
+if (videojs.Vhs) {
+    videojs.Vhs.xhr.beforeRequest = function (options) {
+        const token = localStorage.getItem("token");
+        if (token) {
+            options.headers = options.headers || {};
+            options.headers["Authorization"] = `Bearer ${token}`;
+        }
+        return options;
+    };
+} else if (videojs.HttpSourceSelector) {
+    videojs.Hls.xhr.beforeSend = function (options) {
+        const token = localStorage.getItem("token");
+        if (token) {
+            options.headers = options.headers || {};
+            options.headers["Authorization"] = `Bearer ${token}`;
+        }
+    };
+}
+
+// Initialize video.js player
 onMounted(() => {
     if (videoRef.value) {
         player = videojs(videoRef.value, {
@@ -27,9 +50,18 @@ onMounted(() => {
             autoplay: false,
             preload: "auto",
         });
+
+        if (videoPath.value) {
+            player.src({
+                src: videoPath.value,
+                type: "application/x-mpegURL",
+            });
+        }
     }
 });
 
+// Update video source if video_file prop changes
+// e.g.: XXX.m3u8 to XXX0.ts to XXX1.ts etc.
 onUpdated(() => {
     if (player && videoPath.value) {
         player.src({
@@ -39,6 +71,7 @@ onUpdated(() => {
     }
 });
 
+// Dispose of the player when the component is unmounted
 onBeforeUnmount(() => {
     if (player) {
         player.dispose();
