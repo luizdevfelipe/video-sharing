@@ -2,11 +2,8 @@
 
 namespace Tests\Services\Feature;
 
-use App\Enums\VideoVisibilityEnum;
 use App\Models\User;
-use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Tests\Traits\VideoTestSetupTrait;
 
@@ -40,7 +37,8 @@ class ControlsVideoAccessTest extends TestCase
             'permission' => now()
         ]);
 
-        $response = $this->actingAs($user)->get('/api/video/' . $testData['fileName']);
+        $response = $this->actingAsJwt($user)->get('/api/video/' . $testData['fileName']);
+        
         $response->assertStatus(200);
     }
 }
