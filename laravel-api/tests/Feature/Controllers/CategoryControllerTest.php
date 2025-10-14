@@ -19,7 +19,7 @@ class CategoryControllerTest extends TestCase
         $categories = Category::select('name', 'title', 'description')->where('lang', config('app.locale'))->orderBy('name')->get()->toArray();
 
         // Act
-        $response = $this->actingAs($user)->get('/api/categories');
+        $response = $this->actingAsJwt($user)->get('/api/categories');
         
         // Assert
         $response->assertStatus(200);

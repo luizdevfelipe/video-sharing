@@ -32,7 +32,7 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
 
         // Act
-        $response = $this->actingAs($user)->post('/api/profile/video', [
+        $response = $this->actingAsJwt($user)->post('/api/profile/video', [
             'title' => 'Sample Video Title',
             'description' => 'This is a sample video description that is long enough to meet the validation requirements for the test.',
             'categories' => ['action', 'drama'],
