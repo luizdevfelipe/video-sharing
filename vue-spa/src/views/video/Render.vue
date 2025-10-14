@@ -32,7 +32,13 @@ onMounted(async () => {
             videoData.videoFile = response.data.video_file;
         })
         .catch((error) => {
-            router.push({name: 'home'});
+            if (error.response.data.message === 'requires_auth') {
+                router.push({ name: 'login' });
+            } else if (error.response.data.message === 'private_video') {
+                router.push({ name: 'home' });
+            } else {
+                console.error(error.response.data.message);
+            }
         });
 })
 

@@ -7,6 +7,8 @@ use App\Services\VideoService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ControlsVideoAccess
 {
@@ -40,12 +42,14 @@ class ControlsVideoAccess
             return $next($request);
         }
 
-        if (!$request->user()) {
-            abort(403, __('status.login_required'));
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (JWTException $e) {
+            abort(403, 'requires_auth');
         }
 
-        if (!$this->videoService->isVideoAccessibleByUser($video, $request->user())) {
-            abort(403, __('status.private_video'));
+        if (!$this->videoService->isVideoAccessibleByUser($video, $user)) {
+            abort(403, 'private_video');
         }
 
         return $next($request);

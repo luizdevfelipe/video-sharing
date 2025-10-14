@@ -85,7 +85,7 @@ class VideoControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post("api/video/{$videoId}/comment", [
+        $response = $this->actingAsJwt($user)->post("api/video/{$videoId}/comment", [
             'content' => 'This is a test comment.',
         ]);
 
