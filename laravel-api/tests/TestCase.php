@@ -13,11 +13,18 @@ abstract class TestCase extends BaseTestCase
      */
     protected function actingAsJwt(User $user): TestCase
     {
-        $token = JWTAuth::fromUser($user);
-        $this->withHeaders([
+        $token = $this->getJwtToken($user);
+        return $this->withHeaders([
             'Authorization' => 'Bearer ' . $token,
             'Accept' => 'application/json',
         ]);
-        return $this;
+    }
+
+    /**
+     * Generate a JWT token for the given user.
+     */
+    protected function getJwtToken(User $user): string
+    {
+        return JWTAuth::fromUser($user);
     }
 }
