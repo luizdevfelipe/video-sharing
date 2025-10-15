@@ -26,7 +26,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
         Route::get('/user', 'getUser')->name('user');
         Route::put('/user', 'updateUser')->name('user.update');
         Route::post('/logout', 'logout')->name('logout');
-        Route::post('/refresh-token', 'refreshToken')->name('token.refresh');
+        
     });
 
     /**
@@ -65,6 +65,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');
     Route::post('/login', 'login')->name('login');
+    Route::post('/refresh-token', 'refreshToken')->name('token.refresh');
 });
 
 Route::controller(VideoController::class)->prefix('/video')->name('video')->group(function () {
