@@ -58,7 +58,7 @@ class AuthController extends Controller
                 return response()->json(['error' => __('auth.failed')], 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
+            return response()->json(['error' => 'Could not create token'], 401);
         }
 
         return response()->json(['token' => $token]);
@@ -92,7 +92,7 @@ class AuthController extends Controller
             }
             return response()->json($user);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to fetch user profile'], 500);
+            return response()->json(['error' => 'Failed to fetch user profile'], 401);
         }
     }
 
@@ -108,7 +108,7 @@ class AuthController extends Controller
             $user->update($request->only(['name', 'email']));
             return response()->json($user);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to update user'], 500);
+            return response()->json(['error' => 'Failed to update user'], 401);
         }
     }
 
@@ -119,10 +119,10 @@ class AuthController extends Controller
     public function refreshToken(): JsonResponse
     {
         try {
-            $newToken = JWTAuth::refresh();
+            $newToken = JWTAuth::refresh(JWTAuth::getToken());
             return response()->json(['token' => $newToken]);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Failed to refresh token'], 500);
+            return response()->json(['error' => 'Failed to refresh token'], 401);
         }
     }
 }
