@@ -19,21 +19,37 @@ api.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
+    const status = error.response?.status;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    if (status !== 401 || originalRequest._retry) {
+      return Promise.reject(error);
+    }
 
-      try {
-        const newToken = await refreshToken();
-        if (newToken) {
-          originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-          return api(originalRequest);
-        }
-      } catch (e) {
-        localStorage.removeItem('token');
-        removeAuthToken();
-        window.location.href = '/login';
+    const storedToken = localStorage.getItem('token');
+    if (!storedToken) {
+      removeAuthToken();
+      return Promise.reject(error);
+    }
+
+    if (originalRequest.url.includes('/refresh-token')) {
+      removeAuthToken();
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    try {
+      const newToken = await refreshToken();
+      if (newToken) {
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+        return api(originalRequest);
       }
+    } catch (e) {
+      localStorage.removeItem('token');
+      removeAuthToken();
+      window.location.href = '/login';
     }
 
     return Promise.reject(error);
