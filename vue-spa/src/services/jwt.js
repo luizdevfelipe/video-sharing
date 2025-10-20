@@ -38,5 +38,7 @@ export async function refreshToken() {
         localStorage.setItem('token', newToken);
         setAuthToken(newToken);
         autoRefreshToken(newToken);
+        return newToken;
     }
+    return null;    
 }

@@ -51,7 +51,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::ignoreRoutes();
 
         Route::prefix('api')
-            ->middleware(config('fortify.middleware', ['web']))
+            ->middleware(config('fortify.middleware', ['web'])) // Search in fortify.php middlewares, or use 'web' by default
             ->group(function () {
                 // Login & logout
                 // Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
