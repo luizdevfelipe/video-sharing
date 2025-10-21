@@ -4,6 +4,7 @@ import Submit from '@/components/inputs/Submit.vue';
 import TextInput from '@/components/inputs/TextInput.vue';
 import { getTranslations } from '@/assets/js/translations.js';
 import api from '@/services/api.js';
+import { setAuthToken } from '@/services/jwt.js';
 import { reactive } from 'vue';
 
 const userData = reactive({
@@ -23,6 +24,10 @@ async function createAccount() {
             password_confirmation: userData.password_confirmation
         }).then(response => {
             alert(response.data.message);
+            if (response.data.token) {
+                const token = response.data.token;
+                setAuthToken(token);
+            }
             window.location.href = '/profile';
         }).catch(error => {
             userData.errors = error.response.data.message;
