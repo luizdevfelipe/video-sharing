@@ -32,7 +32,6 @@ class AuthControllerTest extends TestCase
             'Authorization' => 'Bearer ' .  $this->getJwtToken($user),
         ])->post('/api/refresh-token');
 
-        $response->dump();
         $response->assertStatus(401);
     }
 }
