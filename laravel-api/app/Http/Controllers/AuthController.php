@@ -35,12 +35,13 @@ class AuthController extends Controller
         try {
             $token = JWTAuth::fromUser($user);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
+            return response()->json(['message' => 'Could not create token'], 500);
         }
 
         return response()->json([
             'token' => $token,
             'user' => $user,
+            'message' => __('auth.registered')
         ], 201);
     }
 
