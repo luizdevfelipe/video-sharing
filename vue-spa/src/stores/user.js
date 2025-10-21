@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import api from '@/services/api';
-import { setAuthToken, removeAuthToken } from '@/services/api';
-import { autoRefreshToken } from '@/services/jwt';
+import { autoRefreshToken, setAuthToken, removeAuthToken } from '@/services/jwt';
 
 export const useUserStore = defineStore('user', () => {
     const user = ref(null);
@@ -29,7 +28,6 @@ export const useUserStore = defineStore('user', () => {
             const res = await api.post('/api/login', { email, password, remember });
             if (res.data.token) {
                 token.value = res.data.token;
-                localStorage.setItem('token', res.data.token);
                 setAuthToken(res.data.token);
                 autoRefreshToken(res.data.token);
             }
@@ -43,7 +41,6 @@ export const useUserStore = defineStore('user', () => {
         if (result.status === 200) {
             user.value = null;
             token.value = null;
-            localStorage.removeItem('token');
             removeAuthToken();
             window.location.href = '/';
         }
