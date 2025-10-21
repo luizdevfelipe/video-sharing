@@ -1,9 +1,18 @@
 import api from "./api";
-import { setAuthToken } from "./api";
 
 export function parseJwtPayload(token) {
     const encodedPayload = token.split('.')[1];
     return JSON.parse(atob(encodedPayload));
+}
+
+export function setAuthToken(token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  localStorage.setItem('token', token);
+}
+
+export function removeAuthToken() {
+  delete api.defaults.headers.common['Authorization'];
+  localStorage.removeItem('token');
 }
 
 export function autoRefreshToken(token) {
