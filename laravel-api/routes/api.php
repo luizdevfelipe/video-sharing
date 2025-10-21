@@ -22,11 +22,10 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
      * --------------------------------------------------------------------------
      * Route group for authenticated user actions
      */
-    Route::controller(AuthController::class)->group(function () {
+    Route::controller(AuthController::class)->withoutMiddleware('verified')->group(function () {
         Route::get('/user', 'getUser')->name('user');
         Route::put('/user', 'updateUser')->name('user.update');
         Route::post('/logout', 'logout')->name('logout');
-        
     });
 
     /**
