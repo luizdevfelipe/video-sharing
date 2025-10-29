@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Controllers\VerifyEmailController;
 use App\Http\Responses\Fortify\VerifyEmailResponse;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -19,7 +20,6 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as ContractsVerifyEmailResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
 use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
 use Laravel\Fortify\Http\Controllers\ConfirmedTwoFactorAuthenticationController;
@@ -29,7 +29,6 @@ use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
 use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
-use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\TwoFactorSecretKeyController;
 
@@ -50,23 +49,19 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::ignoreRoutes();
 
-        Route::prefix('api')
-            ->middleware(config('fortify.middleware', ['web'])) // Search in fortify.php middlewares, or use 'web' by default
+        // Email verification
+        if (Features::enabled(Features::emailVerification())) {
+            Route::post('api/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+                ->middleware(['auth:api']);
+            Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verifyEmailByHash'])->name('verification.verify');
+        }
+
+        Route::middleware(config('fortify.middleware', ['web'])) // Search in fortify.php middlewares, or use 'web' by default
+            ->prefix('api')
             ->group(function () {
-                // Login & logout
-                // Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
-                // Route::post('/logout', [AuthenticatedSessionController::class, 'destroy']);
-
-                // Email verification
-                if (Features::enabled(Features::emailVerification())) {
-                    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store']);
-                    Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])->name('verification.verify');
-                }
-
                 // Password reset
                 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name("password.reset");
                 Route::post('/reset-password', [NewPasswordController::class, 'store']);
-
 
                 // Password confirmation
                 Route::get('/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])
@@ -137,15 +132,17 @@ class FortifyServiceProvider extends ServiceProvider
             return null;
         });
 
+        // Customize the email verification warning page to redirect to the SPA
         Fortify::verifyEmailView(function () {
-            return redirect(config('app.spa.domain'). '/verify-email');
+            return redirect(config('app.spa.domain') . '/verify-email');
         });
 
+        // Customize the password reset URL to point to the SPA domain
         ResetPassword::createUrlUsing(function ($notifiable, string $token) {
-            $url = 'http://'.config('app.spa.domain').'\/reset-password/' . $token . '?email=' . urlencode($notifiable->getEmailForPasswordReset());
+            $url = 'http://' . config('app.spa.domain') . '\/reset-password/' . $token . '?email=' . urlencode($notifiable->getEmailForPasswordReset());
             return $url;
         });
-        
+
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
