@@ -18,7 +18,7 @@ onMounted(() => {
 
 <template>
     <MainLayout>
-        <section>
+        <section class="px-5">
             <SearchVideoCard v-for="video in videoData" :id="video.id" :title="video.title" :thumb_file="video.thumbnail_path" />
         </section>
     </MainLayout>
