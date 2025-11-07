@@ -72,6 +72,8 @@ Route::controller(VideoController::class)->prefix('/video')->name('video')->grou
 
     Route::get('/thumb/{fileName}', 'getVideoThumb')->name('.thumbnail');
 
+    Route::get('/search', 'searchVideoResults')->name('.search');
+
     Route::middleware(ControlsVideoAccess::class)->group(function () {
         Route::get('/{fileName}', 'getVideoFile')->name('.file');
         Route::get('/{videoId}/comment', 'getComments')->name('.comments');

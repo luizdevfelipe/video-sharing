@@ -129,4 +129,21 @@ class VideoController extends Controller
             'content' => $comment->content
         ], 200);
     }
+
+    /**
+     * Returns the videos data from a query string
+     * @return JsonResponse
+     */
+    public function searchVideoResults(): JsonResponse
+    {
+        $queries = $this->request->query();
+
+        if ($queries == null || !isset($queries['q'])) {
+            return response()->json(['error' => __('No keywords were found.')], 400);
+        }
+
+        $data = $this->videoService->getVideosByQuery($queries['q']);
+
+        return response()->json($data, 200);
+    }
 }
