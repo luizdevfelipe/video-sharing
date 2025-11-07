@@ -10,6 +10,7 @@ use App\Models\Video;
 use Exception;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Video\X264;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 use function PHPUnit\Framework\fileExists;
 
@@ -217,5 +218,20 @@ class VideoService
     public function isVideoAccessibleByUser(Video $video, User $user): bool
     {
         return $user->videos()->where('video_id', $video->id)->exists();
+    }
+
+    /**
+     * Get paginated video data by a query string
+     */
+    public function getVideosByQuery(string $query, int $perPage = 10): LengthAwarePaginator
+    {
+        return Video::select('id', 'title', 'description', 'thumbnail_path')
+            ->where('visibility', VideoVisibilityEnum::PUBLIC)
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'ILIKE', "%{$query}%")
+                    ->orWhere('description', 'ILIKE', "%{$query}%");
+            })
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
     }
 }
