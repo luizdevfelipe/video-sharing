@@ -133,4 +133,12 @@ class VideoControllerTest extends TestCase
             'video_file',
         ]);
     }
+
+    public function test_if_can_return_video_data_from_query_string() {
+        
+        $video = Video::factory()->create();
+
+        $response = $this->get("api/video/search?q=" . $video->title);
+        $response->assertStatus(200);
+    }
 }
