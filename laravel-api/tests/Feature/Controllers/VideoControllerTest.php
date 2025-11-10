@@ -134,11 +134,46 @@ class VideoControllerTest extends TestCase
         ]);
     }
 
-    public function test_if_can_return_video_data_from_query_string() {
-        
+    public function test_if_can_return_video_data_from_query_string(): void
+    {
+        // php artisan test --filter=VideoControllerTest::test_if_can_return_video_data_from_query_string
+
         $video = Video::factory()->create();
 
-        $response = $this->get("api/video/search?q=" . $video->title);
+        $response = $this->get("api/video/search?q=" . urlencode($video->title));
         $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'current_page',
+            'data',
+            'first_page_url',
+            'from',
+            'last_page',
+            'last_page_url',
+            'links',
+            'next_page_url',
+            'path',
+            'per_page',
+            'prev_page_url',
+            'to',
+            'total',
+        ]);
+
+        $response->assertJsonFragment([
+            'current_page' => 1,
+            'last_page' => 1,
+            'per_page' => 10,
+        ]);
+
+        $this->assertStringContainsString('/api/video/search', $response->json('path'));
+    }
+
+    public function test_if_can_return_not_found_searched_video_message() 
+    {
+        // php artisan test --filter=VideoControllerTest::test_if_can_return_not_found_searched_video_message
+        $response = $this->get("api/video/search?q=");
+        
+        $response->assertStatus(400);
+        $response->assertJsonStructure(['error']);
     }
 }
