@@ -5,6 +5,7 @@ const back_url = import.meta.env.VITE_APP_BACKEND
 const props = defineProps({
     id: Number,
     title: String,
+    description: String,
     thumb_file: String,
 })
 
@@ -37,6 +38,9 @@ onUnmounted(() => {
       <div class="p-2">
         <p class="text-dark font-bold text-xl dark:text-white" :title="title">
           {{ (title.length > 25 && window_size < 1024) || (title.length > 15 && window_size < 640) ? title.slice(0, 13) + '…' : title }}
+        </p>
+        <p class="break-all">
+          {{ description }}
         </p>
       </div>
     </div>
