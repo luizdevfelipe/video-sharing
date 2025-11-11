@@ -26,7 +26,7 @@ const translations = getTranslations();
 <template>
     <MainLayout>
         <section v-if="videoData.length > 0" class="px-5">
-            <SearchVideoCard v-for="video in videoData" :id="video.id" :title="video.title" :thumb_file="video.thumbnail_path" />
+            <SearchVideoCard v-for="video in videoData" :id="video.id" :title="video.title" :description="video.description" :thumb_file="video.thumbnail_path" />
         </section>
         <ErrorSection v-else> {{ translations.videoNotFound }} </ErrorSection>
     </MainLayout>
