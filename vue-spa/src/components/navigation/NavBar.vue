@@ -1,12 +1,13 @@
 <script setup>
 import { RouterLink, useRouter  } from 'vue-router';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { initFlowbite } from 'flowbite';
 import { getTranslations } from '@/assets/js/translations';
 import { useUserStore } from '@/stores/user.js';
 
 const userStore = useUserStore();
 const router = useRouter();
+const window_size = ref(window.innerWidth)
 
 onMounted(async () => {
     initFlowbite();
@@ -23,7 +24,7 @@ const translations = getTranslations();
 <template>
     <nav class="p-2 flex items-center text-dark bg-gray-200 dark:text-white dark:bg-gray-800">
         <div class="">
-            <RouterLink to="/">VideoSharing</RouterLink>
+            <RouterLink to="/">{{ window_size <= 400 ? 'VSharing' : 'VideoSharing' }}</RouterLink>
         </div>
         <form action="/search" method="get" class="max-w-md mx-auto basis-2/3">
             <label for="iquery" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"></label>
