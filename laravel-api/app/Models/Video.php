@@ -14,6 +14,7 @@ class Video extends Model
     protected $fillable = [
         'title',
         'description',
+        'views',
         'visibility',
         'video_path',
         'thumbnail_path',
