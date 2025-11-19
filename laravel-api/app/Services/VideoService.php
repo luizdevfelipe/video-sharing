@@ -37,6 +37,7 @@ class VideoService
         $video = Video::create([
             'title' => $title,
             'description' => $description,
+            'views' => 0,
             'visibility' => $visibility,
             'video_path' => $videoPath,
             'thumbnail_path' => $thumbnailPath,
