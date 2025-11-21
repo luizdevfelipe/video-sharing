@@ -32,31 +32,17 @@ cd video-sharing
 #### 2.1. Configure o arquivo de ambiente
 
 ```bash
+cp .env.example .env
+```
+
+```bash
 cd laravel-api
 cp .env.example .env
 ```
 
-#### 2.2. Edite o arquivo `.env` com as configurações necessárias:
-
-```env
-APP_NAME="Video Sharing"
-APP_ENV=local
-APP_DEBUG=true
-APP_URL=http://localhost
-
-DB_CONNECTION=pgsql
-DB_HOST=pgsql
-DB_PORT=5432
-DB_DATABASE=video_sharing
-DB_USERNAME=sail
-DB_PASSWORD=password
-
-# Configurações JWT
-JWT_SECRET=your-secret-key
-
-# Configurações de Upload de Vídeo
-VIDEO_DISK=public
-VIDEO_PATH=videos
+```bash
+cd vue-spa
+cp .env.example .env
 ```
 
 ### 3. Inicialização com Docker
@@ -77,25 +63,7 @@ Isso irá inicializar:
 - **Meilisearch**: http://localhost:7700
 - **Mailpit**: http://localhost:8025
 
-#### 3.2. Execute as migrações e seeders
-
-```bash
-docker-compose exec laravel php artisan migrate --seed
-```
-
-#### 3.3. Gere a chave JWT
-
-```bash
-docker-compose exec laravel php artisan jwt:secret
-```
-
-#### 3.4. Crie o link simbólico para storage
-
-```bash
-docker-compose exec laravel php artisan storage:link
-```
-
-### 4. Instalação de Dependências (se necessário)
+### 3.2. Instalação de Dependências
 
 #### Backend (Laravel):
 ```bash
@@ -105,6 +73,24 @@ docker-compose exec laravel composer install
 #### Frontend (Vue.js):
 ```bash
 docker-compose exec vue npm install
+```
+
+#### 3.3. Execute as migrações e seeders
+
+```bash
+docker-compose exec laravel php artisan migrate --seed
+```
+
+#### 3.4. Gere a chave JWT
+
+```bash
+docker-compose exec laravel php artisan jwt:secret
+```
+
+#### 3.5. Crie o link simbólico para storage
+
+```bash
+docker-compose exec laravel php artisan storage:link
 ```
 
 ## 📡 Endpoints da API
