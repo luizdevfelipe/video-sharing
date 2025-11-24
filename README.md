@@ -75,19 +75,25 @@ docker-compose exec laravel composer install
 docker-compose exec vue npm install
 ```
 
-#### 3.3. Execute as migrações e seeders
+#### 3.3. Gerar a chave para a aplicação
+
+```bash
+docker-compose exec laravel php artisan key:generate
+```
+
+#### 3.4. Execute as migrações e seeders
 
 ```bash
 docker-compose exec laravel php artisan migrate --seed
 ```
 
-#### 3.4. Gere a chave JWT
+#### 3.5. Gere a chave JWT
 
 ```bash
 docker-compose exec laravel php artisan jwt:secret
 ```
 
-#### 3.5. Crie o link simbólico para storage
+#### 3.6. Crie o link simbólico para storage
 
 ```bash
 docker-compose exec laravel php artisan storage:link
@@ -119,13 +125,7 @@ docker-compose exec laravel php artisan storage:link
 ### Laravel (Backend)
 ```bash
 # Acessar container do Laravel
-docker-compose exec laravel bash
-
-# Executar migrações
-docker-compose exec laravel php artisan migrate
-
-# Executar seeders
-docker-compose exec laravel php artisan db:seed
+docker exec -it video-sharing-laravel-1 bash
 
 # Limpar cache
 docker-compose exec laravel php artisan cache:clear
@@ -164,7 +164,7 @@ docker-compose exec pgsql psql -U sail -d video_sharing
 - JWT Auth (tymon/jwt-auth)
 - Laravel Sanctum
 - Laravel Fortify
-- FFmpeg (processamento de vídeo)
+- HLS + FFmpeg (processamento de vídeo)
 
 ### Frontend
 - Vue.js 3
@@ -206,7 +206,7 @@ O projeto utiliza JWT (JSON Web Tokens) para autenticação. Após o login, o to
 Authorization: Bearer {token}
 ```
 
-## 📧 Emails (Desenvolvimento)
+## 📧 Emails (para autenticação)
 
 Durante o desenvolvimento, os emails são capturados pelo Mailpit e podem ser visualizados em:
 http://localhost:8025
